@@ -7,9 +7,9 @@ import { HiCheck } from "react-icons/hi";
 import treeRight from '../assets/Tree50.png'; 
 import satelliteImg from '../assets/tree5.jpg';
 import graphImg from '../assets/tree9.jpg'; 
-import indiaImg from '../assets/tree8.jpg'; 
+import indiaImg from '../assets/tree22.jpg'; 
 
-
+//chhelu //chhelu
 // --- ANIMATION VARIANTS ---
 const containerVariants = {
   hidden: { opacity: 0 },
