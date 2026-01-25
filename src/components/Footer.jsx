@@ -90,7 +90,7 @@ const Footer = () => {
 
       {/* --- BOTTOM BAR --- */}
       <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-        <p>&copy; 2025 Sylithe Inc. All rights reserved.</p>
+        <p>&copy; 2026 Sylithe Inc. All rights reserved.</p>
         <div className="flex gap-8">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

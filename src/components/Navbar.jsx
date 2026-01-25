@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // --- 1. IMPORT YOUR PNG LOGO HERE ---
 // Make sure your file is named 'sylithe-logo.png' and is in the 'src/assets' folder
-import sylitheLogo from '../assets/tree13.png'; 
+import sylitheLogo from '../assets/treee13.png'; 
 
 // Icons for the menu items
 import { RiMapPin2Line, RiBarChartGroupedLine, RiGlobalLine, RiFileList3Line } from "react-icons/ri"; 
@@ -155,16 +155,14 @@ const Navbar = () => {
   return (
     <nav className="w-full h-20 px-6 md:px-12 lg:px-24 flex items-center justify-between bg-white/95 backdrop-blur-md fixed top-0 z-50 border-b border-gray-100">
         
-        {/* --- 2. UPDATED LOGO SECTION --- */}
+        {/* --- LOGO SECTION --- */}
         <Link to="/" className="flex-shrink-0 cursor-pointer flex items-center gap-3 group">
-            {/* The Image Logo */}
             <img 
               src={sylitheLogo} 
               alt="Sylithe Logo" 
               className="h-10 w-auto object-contain group-hover:scale-105 transition-transform duration-300" 
             />
             
-            {/* The Text Logo next to it */}
             <span className="text-2xl font-bold text-[#0F172A] tracking-tight">
               Sylithe
             </span>
@@ -188,10 +186,17 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-6 font-medium flex-shrink-0">
-            <button className="hidden md:block text-gray-700 hover:text-black transition-colors">Login</button>
-            <button className="bg-sylitheGreen text-sylitheDark px-5 py-2.5 rounded-full flex items-center gap-2 hover:bg-[#92d02e] transition-all shadow-sm hover:shadow-md active:scale-95 font-bold">
-                Get free access <HiOutlineArrowRight className="text-lg" />
-            </button>
+            {/* UPDATED: Link to Login Page */}
+            <Link to="/login">
+                <button className="hidden md:block text-gray-700 hover:text-black transition-colors">Login</button>
+            </Link>
+
+            {/* UPDATED: Link to Signup Page */}
+            <Link to="/signup">
+                <button className="bg-sylitheGreen text-sylitheDark px-5 py-2.5 rounded-full flex items-center gap-2 hover:bg-[#92d02e] transition-all shadow-sm hover:shadow-md active:scale-95 font-bold">
+                    Get free access <HiOutlineArrowRight className="text-lg" />
+                </button>
+            </Link>
         </div>
     </nav>
   );
