@@ -1,0 +1,110 @@
+from pydantic import BaseModel
+from typing import Dict, Any, Optional, List
+
+class AOIRequest(BaseModel):
+    aoi: Dict[str, Any]
+    start_date: str
+    end_date: str
+
+class LULCResponse(BaseModel):
+    tile_url: str
+    stats: Optional[Dict[str, Any]] = None
+    aoi_area_km2: float
+
+class TimelineRequest(BaseModel):
+    aoi: Dict[str, Any]
+    start_year: int
+    end_year: int
+
+class TimelineYearData(BaseModel):
+    year: int
+    tile_url: str
+    stats: Dict[str, Any]
+
+class TimelineResponse(BaseModel):
+    timeline: List[TimelineYearData]
+    aoi_area_km2: float
+
+class BaselineRequest(BaseModel):
+    aoi: Dict[str, Any]
+    baseline_year: int
+
+class BaselineResponse(BaseModel):
+    baseline_id: str
+    baseline_year: int
+    tile_url: str
+    stats: Dict[str, Any]
+    area_km2: float
+    locked: bool
+    created_at: str
+    locked_at: Optional[str] = None
+
+class LockBaselineRequest(BaseModel):
+    baseline_id: str
+    locked_by: Optional[str] = "user"
+
+class ChangeDetectionRequest(BaseModel):
+    baseline_id: str
+    current_year: int
+    aoi: Dict[str, Any]
+
+class ClassChange(BaseModel):
+    class_id: int
+    class_name: str
+    baseline_pct: float
+    current_pct: float
+    baseline_km2: float
+    current_km2: float
+    change_km2: float
+    change_pct: float
+    summary: str
+
+class Transition(BaseModel):
+    from_class: str
+    to_class: str
+    area_km2: float
+    description: str
+
+class ChangeDetectionResponse(BaseModel):
+    baseline_year: int
+    current_year: int
+    years_elapsed: int
+    changes: Dict[str, ClassChange]
+    transitions: Dict[str, Transition]
+    summary: Dict[str, Any]
+    current_tile_url: str
+
+class RiskFlag(BaseModel):
+    type: str
+    severity: str
+    score_impact: int
+    reason: str
+    explanation: str
+    recommendation: str
+
+class RiskAssessmentResponse(BaseModel):
+    risk_score: int
+    risk_level: str
+    permanence_confidence: int
+    flags: List[RiskFlag]
+    total_flags: int
+    critical_flags: int
+    high_flags: int
+    summary: Dict[str, Any]
+
+class ZoneStats(BaseModel):
+    baseline_forest_pct: float
+    current_forest_pct: float
+    deforestation_pct: float
+    area_km2: float
+
+class LeakageAnalysisResponse(BaseModel):
+    leakage_detected: bool
+    leakage_severity: str
+    leakage_ratio: float
+    buffer_km: int
+    buffer_tile_url: str
+    project_area: ZoneStats
+    buffer_zone: ZoneStats
+    summary: str
+    recommendation: str
