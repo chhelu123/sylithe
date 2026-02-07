@@ -108,3 +108,42 @@ class LeakageAnalysisResponse(BaseModel):
     buffer_zone: ZoneStats
     summary: str
     recommendation: str
+
+class DACBRequest(BaseModel):
+    aoi: Dict[str, Any]
+    baseline_year: int
+    current_year: int
+    buffer_km: int = 5
+    use_knn: bool = True
+
+class ControlAreaQuality(BaseModel):
+    similarity_score: float
+    quality: str
+    project_forest_pct: float
+    control_forest_pct: float
+
+class DACBResponse(BaseModel):
+    baseline_model: str
+    baseline_year: int
+    current_year: int
+    years_elapsed: int
+    buffer_km: int
+    project_tile_url: str
+    control_tile_url: str
+    control_geojson: Dict[str, Any]
+    project_forest_baseline_km2: float
+    project_forest_current_km2: float
+    control_forest_baseline_km2: float
+    control_forest_current_km2: float
+    control_trend_km2_per_year: float
+    expected_forest_km2: float
+    observed_forest_km2: float
+    avoided_deforestation_km2: float
+    leakage_ratio: float
+    leakage_severity: str
+    leakage_adjustment_factor: float
+    adjusted_avoided_deforestation_km2: float
+    permanence_score: float
+    control_area_quality: ControlAreaQuality
+    confidence: str
+    control_selection: Dict[str, Any]

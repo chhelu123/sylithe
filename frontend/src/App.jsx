@@ -5,7 +5,8 @@ import BaselinePanel from './components/BaselinePanel';
 import ChangeDetectionPanel from './components/ChangeDetectionPanel';
 import RiskAssessmentPanel from './components/RiskAssessmentPanel';
 import LeakagePanel from './components/LeakagePanel';
-import { analyzeLULC, analyzeTimeline, createBaseline, lockBaseline, detectChanges, assessRisk, analyzeLeakage } from './services/api';
+import DACBPanel from './components/DACBPanel';
+import { analyzeLULC, analyzeTimeline, createBaseline, lockBaseline, detectChanges, assessRisk, analyzeLeakage, analyzeDACB } from './services/api';
 import './App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
   const [bufferTileUrl, setBufferTileUrl] = useState(null);
   const [carbonMode, setCarbonMode] = useState(false);
   const [activeTab, setActiveTab] = useState('changes');
+  const [dacbData, setDacbData] = useState(null);
 
   const handlePolygonDrawn = async (geojson) => {
     setCurrentAoi(geojson);
@@ -154,6 +156,10 @@ function App() {
       const leakageResult = await analyzeLeakage(baseline.baseline_id, currentYear, currentAoi);
       setLeakageData(leakageResult);
       setBufferTileUrl(leakageResult.buffer_tile_url);
+      
+      // Run DACB analysis
+      const dacbResult = await analyzeDACB(currentAoi, baseline.baseline_year, currentYear, 5, true);
+      setDacbData(dacbResult);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -237,12 +243,19 @@ function App() {
                     >
                       Leakage
                     </button>
+                    <button 
+                      onClick={() => setActiveTab('dacb')} 
+                      style={{...styles.tab, ...(activeTab === 'dacb' ? styles.activeTab : {})}}
+                    >
+                      DACB
+                    </button>
                   </div>
 
                   <div style={styles.tabContent}>
                     {activeTab === 'changes' && <ChangeDetectionPanel changeData={changeData} />}
                     {activeTab === 'risk' && <RiskAssessmentPanel riskData={riskData} />}
                     {activeTab === 'leakage' && <LeakagePanel leakageData={leakageData} />}
+                    {activeTab === 'dacb' && <DACBPanel dacbData={dacbData} />}
                   </div>
                 </div>
               )}
@@ -372,21 +385,21 @@ const styles = {
     marginTop: '24px'
   },
   tabNav: {
-    display: 'flex',
-    gap: '8px',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '6px',
     marginBottom: '20px',
     borderBottom: '1px solid rgba(132,204,22,0.2)',
     paddingBottom: '0'
   },
   tab: {
-    flex: 1,
-    padding: '12px 16px',
+    padding: '10px 8px',
     border: 'none',
     background: 'transparent',
     color: '#64748b',
     borderRadius: '8px 8px 0 0',
     cursor: 'pointer',
-    fontSize: '13px',
+    fontSize: '12px',
     fontWeight: '600',
     transition: 'all 0.2s',
     position: 'relative',

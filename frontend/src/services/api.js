@@ -133,3 +133,23 @@ export const analyzeLeakage = async (baselineId, currentYear, aoi) => {
   
   return response.json();
 };
+
+export const analyzeDACB = async (aoi, baselineYear, currentYear, bufferKm = 5, useKnn = true) => {
+  const response = await fetch(`${API_BASE}/api/dacb/analyze`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      aoi,
+      baseline_year: baselineYear,
+      current_year: currentYear,
+      buffer_km: bufferKm,
+      use_knn: useKnn
+    })
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API error: ${response.statusText}`);
+  }
+  
+  return response.json();
+};

@@ -4,7 +4,7 @@ from app.schemas import (
     AOIRequest, LULCResponse, TimelineRequest, TimelineResponse, TimelineYearData,
     BaselineRequest, BaselineResponse, LockBaselineRequest,
     ChangeDetectionRequest, ChangeDetectionResponse, RiskAssessmentResponse,
-    LeakageAnalysisResponse
+    LeakageAnalysisResponse, DACBRequest, DACBResponse
 )
 from app.gee_service import init_gee, generate_lulc
 from app.database import (
@@ -14,6 +14,7 @@ from app.database import (
 from app.change_detection import calculate_changes, detect_key_transitions, generate_change_summary
 from app.risk_assessment import assess_carbon_risk
 from app.leakage_analysis import analyze_leakage
+from app.dacb_service import dacb_analysis
 import os
 from dotenv import load_dotenv
 
@@ -284,5 +285,21 @@ def analyze_leakage_endpoint(request: ChangeDetectionRequest):
         )
         
         return LeakageAnalysisResponse(**leakage_result)
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+@app.post("/api/dacb/analyze", response_model=DACBResponse)
+def analyze_dacb(request: DACBRequest):
+    try:
+        # Run DACB analysis
+        dacb_result = dacb_analysis(
+            request.aoi,
+            request.baseline_year,
+            request.current_year,
+            request.buffer_km,
+            request.use_knn
+        )
+        
+        return DACBResponse(**dacb_result)
     except Exception as e:
         raise HTTPException(500, str(e))
