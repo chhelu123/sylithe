@@ -157,8 +157,8 @@ function App() {
       setLeakageData(leakageResult);
       setBufferTileUrl(leakageResult.buffer_tile_url);
       
-      // Run DACB analysis
-      const dacbResult = await analyzeDACB(currentAoi, baseline.baseline_year, currentYear, 5, true);
+      // Run DACB analysis (KNN disabled by default for speed)
+      const dacbResult = await analyzeDACB(currentAoi, baseline.baseline_year, currentYear, 5, false);
       setDacbData(dacbResult);
     } catch (err) {
       setError(err.message);

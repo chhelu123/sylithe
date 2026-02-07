@@ -3,23 +3,20 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from app.gee_service import geojson_to_ee
 
-def generate_candidate_tiles(aoi_geojson, buffer_km=20, tile_size_km=1):
-    """Generate candidate control area tiles around project AOI"""
+def generate_candidate_tiles(aoi_geojson, buffer_km=10, tile_size_km=2):
+    """Generate candidate tiles - OPTIMIZED: larger tiles, smaller buffer"""
     aoi = geojson_to_ee(aoi_geojson)
     
-    # Create outer buffer
     buffer_meters = buffer_km * 1000
     outer_buffer = aoi.buffer(buffer_meters)
     
-    # Get bounds
     bounds = outer_buffer.bounds()
     coords = bounds.coordinates().getInfo()[0]
     
-    # Calculate grid
     min_lon, min_lat = coords[0]
     max_lon, max_lat = coords[2]
     
-    tile_size_deg = tile_size_km / 111  # Approximate km to degrees
+    tile_size_deg = tile_size_km / 111
     
     tiles = []
     lat = min_lat
@@ -28,10 +25,8 @@ def generate_candidate_tiles(aoi_geojson, buffer_km=20, tile_size_km=1):
     while lat < max_lat:
         lon = min_lon
         while lon < max_lon:
-            # Create tile geometry
             tile = ee.Geometry.Rectangle([lon, lat, lon + tile_size_deg, lat + tile_size_deg])
             
-            # Exclude if overlaps with project AOI
             if not tile.intersects(aoi).getInfo():
                 tiles.append({
                     'id': f'tile_{tile_id}',
@@ -42,128 +37,128 @@ def generate_candidate_tiles(aoi_geojson, buffer_km=20, tile_size_km=1):
             lon += tile_size_deg
         lat += tile_size_deg
     
-    return tiles[:100]  # Limit to 100 candidates for performance
+    return tiles[:25]  # OPTIMIZED: 25 tiles instead of 100
 
-def extract_features(geometry, baseline_year, current_year):
-    """Extract feature vector from GEE for a geometry"""
+def extract_features_batch(geometries, baseline_year, current_year):
+    """OPTIMIZED: Extract features for multiple geometries in one call"""
     
-    # Forest percentage at baseline
+    # Create feature collection from geometries
+    features = [ee.Feature(g['geometry']) for g in geometries]
+    fc = ee.FeatureCollection(features)
+    
+    # Load images once
     dw_baseline = ee.ImageCollection('GOOGLE/DYNAMICWORLD/V1') \
         .filterDate(f'{baseline_year}-01-01', f'{baseline_year}-12-31') \
-        .filterBounds(geometry) \
         .select('label') \
         .mode()
     
-    forest_baseline = dw_baseline.eq(1)
-    
-    stats_baseline = forest_baseline.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=geometry,
-        scale=100,
-        maxPixels=1e8
-    )
-    
-    # Forest percentage at current
     dw_current = ee.ImageCollection('GOOGLE/DYNAMICWORLD/V1') \
         .filterDate(f'{current_year}-01-01', f'{current_year}-12-31') \
-        .filterBounds(geometry) \
         .select('label') \
         .mode()
     
-    forest_current = dw_current.eq(1)
+    # Compute forest and built-up for all tiles at once
+    def compute_stats(feature):
+        geom = feature.geometry()
+        
+        forest_base = dw_baseline.eq(1).reduceRegion(
+            reducer=ee.Reducer.mean(),
+            geometry=geom,
+            scale=200,  # OPTIMIZED: 200m instead of 100m
+            maxPixels=1e7
+        ).get('label')
+        
+        forest_curr = dw_current.eq(1).reduceRegion(
+            reducer=ee.Reducer.mean(),
+            geometry=geom,
+            scale=200,
+            maxPixels=1e7
+        ).get('label')
+        
+        built_base = dw_baseline.eq(6).reduceRegion(
+            reducer=ee.Reducer.mean(),
+            geometry=geom,
+            scale=200,
+            maxPixels=1e7
+        ).get('label')
+        
+        built_curr = dw_current.eq(6).reduceRegion(
+            reducer=ee.Reducer.mean(),
+            geometry=geom,
+            scale=200,
+            maxPixels=1e7
+        ).get('label')
+        
+        return feature.set({
+            'forest_base': forest_base,
+            'forest_curr': forest_curr,
+            'built_base': built_base,
+            'built_curr': built_curr
+        })
     
-    stats_current = forest_current.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=geometry,
-        scale=100,
-        maxPixels=1e8
-    )
+    # Process all at once
+    results = fc.map(compute_stats).getInfo()
     
-    # Built-up area
-    built_baseline = dw_baseline.eq(6)
-    built_current = dw_current.eq(6)
-    
-    built_stats_baseline = built_baseline.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=geometry,
-        scale=100,
-        maxPixels=1e8
-    )
-    
-    built_stats_current = built_current.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=geometry,
-        scale=100,
-        maxPixels=1e8
-    )
-    
-    # Get values
-    forest_pct_baseline = stats_baseline.getInfo().get('label', 0) * 100
-    forest_pct_current = stats_current.getInfo().get('label', 0) * 100
-    built_pct_baseline = built_stats_baseline.getInfo().get('label', 0) * 100
-    built_pct_current = built_stats_current.getInfo().get('label', 0) * 100
-    
-    # Calculate rates
+    # Convert to feature vectors
     years = current_year - baseline_year
-    forest_loss_rate = (forest_pct_baseline - forest_pct_current) / years if years > 0 else 0
-    built_growth_rate = (built_pct_current - built_pct_baseline) / years if years > 0 else 0
+    feature_vectors = []
     
-    return np.array([
-        forest_pct_baseline,
-        forest_loss_rate,
-        built_growth_rate,
-        abs(forest_pct_current - forest_pct_baseline)  # Volatility
-    ])
+    for feat in results['features']:
+        props = feat['properties']
+        fb = props.get('forest_base', 0) * 100
+        fc = props.get('forest_curr', 0) * 100
+        bb = props.get('built_base', 0) * 100
+        bc = props.get('built_curr', 0) * 100
+        
+        forest_loss_rate = (fb - fc) / years if years > 0 else 0
+        built_growth_rate = (bc - bb) / years if years > 0 else 0
+        
+        feature_vectors.append([
+            fb,
+            forest_loss_rate,
+            built_growth_rate,
+            abs(fc - fb)
+        ])
+    
+    return np.array(feature_vectors)
 
-def select_control_areas_knn(aoi_geojson, baseline_year, current_year, k=8, buffer_km=20):
-    """Select K most similar control areas using KNN"""
+def select_control_areas_knn(aoi_geojson, baseline_year, current_year, k=5, buffer_km=10):
+    """OPTIMIZED: Select K most similar control areas using KNN"""
     
     aoi = geojson_to_ee(aoi_geojson)
     
-    # Extract project area features
-    project_features = extract_features(aoi, baseline_year, current_year)
-    
-    # Generate candidate tiles
-    candidates = generate_candidate_tiles(aoi_geojson, buffer_km)
+    # Generate fewer, larger tiles
+    candidates = generate_candidate_tiles(aoi_geojson, buffer_km, tile_size_km=2)
     
     if len(candidates) < k:
-        k = len(candidates)
+        k = max(1, len(candidates))
     
-    # Extract features for all candidates
-    candidate_features = []
-    valid_candidates = []
+    # Add project area to batch
+    all_geoms = [{'geometry': aoi}] + candidates
     
-    for candidate in candidates:
-        try:
-            features = extract_features(candidate['geometry'], baseline_year, current_year)
-            candidate_features.append(features)
-            valid_candidates.append(candidate)
-        except:
-            continue  # Skip tiles with no data
+    # Extract features for all in one batch
+    all_features = extract_features_batch(all_geoms, baseline_year, current_year)
     
-    if len(candidate_features) < k:
-        k = len(candidate_features)
+    # Split project and candidates
+    project_features = all_features[0]
+    candidate_features = all_features[1:]
     
-    # Convert to numpy array
-    X = np.array(candidate_features)
-    
-    # Fit KNN
+    # KNN selection
     knn = NearestNeighbors(n_neighbors=k, metric='euclidean')
-    knn.fit(X)
+    knn.fit(candidate_features)
     
-    # Find K nearest neighbors
     distances, indices = knn.kneighbors([project_features])
     
     # Select control areas
     selected_controls = []
     for idx, dist in zip(indices[0], distances[0]):
         selected_controls.append({
-            'tile_id': valid_candidates[idx]['id'],
-            'geometry': valid_candidates[idx]['geometry'],
-            'similarity_score': float(1 / (1 + dist))  # Convert distance to similarity
+            'tile_id': candidates[idx]['id'],
+            'geometry': candidates[idx]['geometry'],
+            'similarity_score': float(1 / (1 + dist))
         })
     
-    # Merge selected tiles into single control area
+    # Merge selected tiles
     control_geometries = [c['geometry'] for c in selected_controls]
     merged_control = ee.Geometry.MultiPolygon([g.coordinates() for g in control_geometries])
     

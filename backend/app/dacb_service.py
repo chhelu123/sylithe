@@ -92,22 +92,27 @@ def control_area_quality_score(F_p_t0, A_p, F_c_t0, A_c):
         "control_forest_pct": round(forest_pct_c, 1)
     }
 
-def dacb_analysis(aoi_geojson, baseline_year, current_year, buffer_km=5, use_knn=True):
+def dacb_analysis(aoi_geojson, baseline_year, current_year, buffer_km=5, use_knn=False):
     """Complete DACB analysis with optional KNN control selection"""
     
     years = current_year - baseline_year
     
     # Select control area
     if use_knn:
-        knn_result = select_control_areas_knn(aoi_geojson, baseline_year, current_year, k=8, buffer_km=buffer_km*4)
-        control_geojson = knn_result['control_geojson']
-        control_metadata = {
-            'method': 'KNN',
-            'k_value': knn_result['k_value'],
-            'features': knn_result['features_used'],
-            'selected_tiles': [t['tile_id'] for t in knn_result['selected_tiles']],
-            'avg_similarity': round(np.mean([t['similarity_score'] for t in knn_result['selected_tiles']]), 3)
-        }
+        try:
+            knn_result = select_control_areas_knn(aoi_geojson, baseline_year, current_year, k=5, buffer_km=buffer_km*2)
+            control_geojson = knn_result['control_geojson']
+            control_metadata = {
+                'method': 'KNN',
+                'k_value': knn_result['k_value'],
+                'features': knn_result['features_used'],
+                'selected_tiles': [t['tile_id'] for t in knn_result['selected_tiles']],
+                'avg_similarity': round(np.mean([t['similarity_score'] for t in knn_result['selected_tiles']]), 3)
+            }
+        except Exception as e:
+            # Fallback to buffer if KNN fails
+            control_geojson = generate_buffer(aoi_geojson, buffer_km)
+            control_metadata = {'method': 'BUFFER_FALLBACK', 'buffer_km': buffer_km, 'knn_error': str(e)}
     else:
         control_geojson = generate_buffer(aoi_geojson, buffer_km)
         control_metadata = {'method': 'BUFFER', 'buffer_km': buffer_km}
