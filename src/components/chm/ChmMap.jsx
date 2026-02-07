@@ -1,117 +1,64 @@
 import React, { useEffect, useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  FeatureGroup,
-  Marker,
-  Circle,
-  useMap
-} from "react-leaflet";
+import { MapContainer, TileLayer, FeatureGroup, GeoJSON, useMap, Marker, Circle } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
+import { FileUp } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
-import L from "leaflet";
 
-// Fix default marker icon issue
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
-});
-
-/* -------------------------------------------------
-   LIVE LOCATION COMPONENT
---------------------------------------------------*/
+/* --- GPS COMPONENT --- */
 const LiveLocation = () => {
   const [position, setPosition] = useState(null);
-  const [accuracy, setAccuracy] = useState(null);
   const map = useMap();
-
   useEffect(() => {
-    if (!navigator.geolocation) {
-      console.warn("Geolocation not supported");
-      return;
-    }
-
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        const latlng = [pos.coords.latitude, pos.coords.longitude];
-        setPosition(latlng);
-        setAccuracy(pos.coords.accuracy);
-
-        // Optional: auto-center on first fix
-        map.setView(latlng, 13);
-      },
-      (err) => {
-        console.error("Location error:", err);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 10000,
-        timeout: 5000
-      }
-    );
-
-    return () => navigator.geolocation.clearWatch(watchId);
+    navigator.geolocation.watchPosition((pos) => {
+      const latlng = [pos.coords.latitude, pos.coords.longitude];
+      setPosition(latlng);
+      map.setView(latlng, map.getZoom());
+    });
   }, [map]);
-
-  if (!position) return null;
-
-  return (
+  return position ? (
     <>
       <Marker position={position} />
-      <Circle
-        center={position}
-        radius={accuracy || 30}
-        pathOptions={{ color: "blue", fillOpacity: 0.15 }}
-      />
+      <Circle center={position} radius={50} pathOptions={{ color: "blue", fillOpacity: 0.1 }} />
     </>
-  );
+  ) : null;
 };
 
-/* -------------------------------------------------
-   MAIN MAP
---------------------------------------------------*/
+/* --- MAIN MAP --- */
 const ChmMap = ({ onPolygonComplete }) => {
-  const handleCreated = (e) => {
-    const layer = e.layer;
-    const geojson = layer.toGeoJSON();
-    onPolygonComplete(geojson);
+  const [importedGeoJson, setImportedGeoJson] = useState(null);
+
+  const handleCreated = (e) => onPolygonComplete(e.layer.toGeoJSON());
+
+  const handleImport = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const json = JSON.parse(ev.target.result);
+        setImportedGeoJson(json);
+        onPolygonComplete(json);
+      } catch (err) { alert("Invalid GeoJSON file."); }
+    };
+    reader.readAsText(file);
   };
 
   return (
     <div className="absolute inset-0">
-      <MapContainer
-        center={[20.5937, 78.9629]} // India
-        zoom={5}
-        className="h-full w-full"
-      >
-        {/* SATELLITE BASEMAP */}
-        <TileLayer
-          attribution="© Esri"
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-        />
+      <div className="absolute top-4 right-14 z-[1000]">
+        <label className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 border border-gray-100 transition-all group">
+          <FileUp size={16} className="text-gray-500 group-hover:text-black" />
+          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-700">Import AOI</span>
+          <input type="file" accept=".geojson,.json" className="hidden" onChange={handleImport} />
+        </label>
+      </div>
 
-        {/* LIVE GPS LOCATION */}
+      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="h-full w-full">
+        <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" attribution="© Esri" />
         <LiveLocation />
-
-        {/* DRAW TOOLS */}
         <FeatureGroup>
-          <EditControl
-            position="topright"
-            onCreated={handleCreated}
-            draw={{
-              rectangle: false,
-              circle: false,
-              circlemarker: false,
-              marker: false,
-              polyline: false
-            }}
-          />
+          <EditControl position="topright" onCreated={handleCreated} draw={{ rectangle: false, circle: false, marker: false, polyline: false }} />
+          {importedGeoJson && <GeoJSON data={importedGeoJson} style={{ color: '#a4fca1', weight: 3, fillOpacity: 0.2 }} />}
         </FeatureGroup>
       </MapContainer>
     </div>

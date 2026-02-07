@@ -1,68 +1,65 @@
-import React, { useState, useCallback } from "react";
-import ChmMap from "../../../components/chm/ChmMap";
+import React, { useState, useEffect } from "react";
+// UPDATED PATHS: Ensure these point correctly to your components folder
 import ChmSidebar from "../../../components/chm/ChmSidebar";
+import ChmMap from "../../../components/chm/ChmMap";
 
 const ChmDashboard = () => {
-  const [polygon, setPolygon] = useState(null);
+  const [currentPolygon, setCurrentPolygon] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState(null);
-  const [error, setError] = useState(null);
-  const [year, setYear] = useState(2023); // ✅ NEW
+  const [result, setResult] = useState(null);
+  const [year, setYear] = useState(2021);
 
-  const handlePolygonComplete = useCallback((geoJson) => {
-    setPolygon(geoJson);
-    setError(null);
-  }, []);
+  const handlePolygonComplete = (geojson) => {
+    setCurrentPolygon(geojson);
+    setResult(null); 
+  };
 
-  const handleRunAnalysis = async () => {
-    if (!polygon) return;
-
+  const handleRunAnalysis = async (selectedYear) => {
+    if (!currentPolygon) return;
     setIsAnalyzing(true);
-    setError(null);
-
     try {
-      const response = await fetch("http://127.0.0.1:5001/chm/predict", {
+      const response = await fetch("http://localhost:5000/api/chm/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          geojson: polygon,
-          year: year // ✅ SEND YEAR
-        }),
+        body: JSON.stringify({ polygon: currentPolygon, year: selectedYear }),
       });
 
-      const result = await response.json();
-
-      if (result.status === "error") {
-        setError(result.message);
-      } else {
-        setAnalysisResult(result);
-      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      setResult({ status: "success", results: data });
     } catch (err) {
-      setError("Backend connection failed. Is Flask running?");
+      console.error("❌ CHM error:", err);
+      setResult({ status: "error", message: err.message });
     } finally {
       setIsAnalyzing(false);
     }
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gray-50">
+    // h-screen and w-full are required to prevent the "White Blank" map area
+    <div className="flex h-screen w-full bg-[#1a1f1a] overflow-hidden">
       <ChmSidebar
-        hasPolygon={!!polygon}
+        hasPolygon={!!currentPolygon}
         isAnalyzing={isAnalyzing}
-        result={analysisResult}
-        year={year}          // ✅ NEW
-        setYear={setYear}    // ✅ NEW
+        result={result}
+        year={year}
+        setYear={setYear} // Passing this fixes the "setYear is not a function" error
         onRunAnalysis={handleRunAnalysis}
       />
-
-      <div className="flex-1 relative">
-        {error && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50
-                          bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg">
-            {error}
+      
+      {/* Container for the Map */}
+      <div className="relative flex-1 h-full bg-[#0a0c0a]">
+        <ChmMap onPolygonComplete={handlePolygonComplete} />
+        
+        {/* Loading Spinner Overlay */}
+        {isAnalyzing && (
+          <div className="absolute inset-0 z-[1000] bg-black/40 backdrop-blur-sm flex items-center justify-center">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-10 h-10 border-4 border-[#a4fca1]/20 border-t-[#a4fca1] rounded-full animate-spin" />
+              <p className="text-[10px] font-bold text-[#a4fca1] tracking-widest uppercase">Analyzing AOI...</p>
+            </div>
           </div>
         )}
-        <ChmMap onPolygonComplete={handlePolygonComplete} />
       </div>
     </div>
   );
