@@ -22,3 +22,23 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# =========================
+# Python / Backend
+# =========================
+__pycache__/
+*.pyc
+venv/
+
+# =========================
+# ML Models (DO NOT COMMIT)
+# =========================
+backend/models/*.pkl
+backend/models/*.joblib
+backend/models/*.pt
+backend/models/*.onnx
+
+# =========================
+# Data / Outputs
+# =========================
+*.csv
+*.parquet
