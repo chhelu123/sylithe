@@ -3,30 +3,34 @@ import { Link } from 'react-router-dom';
 import { HiArrowLeft } from "react-icons/hi";
 import { motion } from 'framer-motion';
 
-const pageImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000";
+const pageImage = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000";
 
-const DynamicBaselines = () => {
+const TransparentReporting = () => { // <--- FIXED NAME
   return (
     <div className="min-h-screen bg-white pt-20 font-sans">
-      {/* DIFFERENT HERO LAYOUT EXAMPLE */}
-      <section className="relative h-[50vh] flex items-center bg-[#064e3b]">
-        <div className="relative z-10 px-6 md:px-12 lg:px-24 w-full">
-           <h1 className="text-5xl font-bold text-white mb-4">Dynamic Baselines</h1>
-           <p className="text-white/80 text-xl">Counterfactual control areas.</p>
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-[#0F172A]">
+        <div className="absolute inset-0 z-0">
+          <img src={pageImage} alt="Reporting" className="w-full h-full object-cover opacity-40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent"></div>
         </div>
-        <div className="absolute inset-0 z-0 opacity-20">
-             <img src={pageImage} className="w-full h-full object-cover" />
+        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <span className="text-[#A3E635] font-bold tracking-widest uppercase text-sm mb-4 block">
+              SYLITHE SOLUTIONS
+            </span>
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              Transparent Reporting
+            </h1>
+            <p className="text-xl text-gray-200 font-light max-w-2xl mx-auto">
+              Interactive, audit-ready data.
+            </p>
         </div>
       </section>
-
-      <section className="py-20 px-6 md:px-12 lg:px-24">
-         <h2 className="text-3xl font-bold">Why Static Baselines Fail</h2>
-         <p className="mt-4 text-gray-600">We abandon static baselines. Our Dynamic Baselines approach identifies real-world 'twin' control areas...</p>
-         {/* You can design this page completely differently now */}
-         <Link to="/" className="mt-8 block text-sylitheGreen font-bold">Go Back</Link>
-      </section>
+      
+      <div className="p-12 text-center">
+        <Link to="/" className="text-[#0F172A] font-bold hover:underline">Go Home</Link>
+      </div>
     </div>
   );
 };
 
-export default DynamicBaselines;
+export default TransparentReporting; // <--- FIXED EXPORT
