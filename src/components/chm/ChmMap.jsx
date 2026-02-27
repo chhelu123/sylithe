@@ -5,16 +5,16 @@ import { FileUp } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 
-/* --- GPS COMPONENT --- */
 const LiveLocation = () => {
   const [position, setPosition] = useState(null);
   const map = useMap();
   useEffect(() => {
-    navigator.geolocation.watchPosition((pos) => {
+    if (!navigator.geolocation) return;
+    const watchId = navigator.geolocation.watchPosition((pos) => {
       const latlng = [pos.coords.latitude, pos.coords.longitude];
       setPosition(latlng);
-      map.setView(latlng, map.getZoom());
     });
+    return () => navigator.geolocation.clearWatch(watchId);
   }, [map]);
   return position ? (
     <>
@@ -24,14 +24,18 @@ const LiveLocation = () => {
   ) : null;
 };
 
-/* --- MAIN MAP --- */
-const ChmMap = ({ onPolygonComplete }) => {
+const ChmMap = ({ onPolygonComplete, result, activeLayers = new Set() }) => {
   const [importedGeoJson, setImportedGeoJson] = useState(null);
+  const tileUrls = result?.status === "success" ? result.results?.tiles : {};
 
-  const handleCreated = (e) => onPolygonComplete(e.layer.toGeoJSON());
+  const handleCreated = (e) => {
+    const geojson = e.layer.toGeoJSON();
+    onPolygonComplete(geojson);
+  };
 
   const handleImport = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
       try {
@@ -44,7 +48,7 @@ const ChmMap = ({ onPolygonComplete }) => {
   };
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 z-10">
       <div className="absolute top-4 right-14 z-[1000]">
         <label className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 border border-gray-100 transition-all group">
           <FileUp size={16} className="text-gray-500 group-hover:text-black" />
@@ -53,12 +57,38 @@ const ChmMap = ({ onPolygonComplete }) => {
         </label>
       </div>
 
-      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="h-full w-full">
+      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="h-full w-full bg-[#0d0f0d]">
         <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" attribution="© Esri" />
+
+        {/* --- DYNAMIC GEE LAYERS (FIXED) --- */}
+        {tileUrls && Object.entries(tileUrls).map(([id, url]) => {
+          if (!activeLayers.has(id)) return null;
+
+          const isPatch = id === 'burn_layer' || id === 'defor_layer';
+
+          return (
+            <TileLayer
+              // FIXED: Added URL to key so React refreshes when URL changes
+              key={`${id}-${url}`}
+              url={url}
+              opacity={isPatch ? 1.0 : 0.7}
+              zIndex={isPatch ? 1000 : 100}
+            />
+          );
+        })}
+
         <LiveLocation />
+
         <FeatureGroup>
-          <EditControl position="topright" onCreated={handleCreated} draw={{ rectangle: false, circle: false, marker: false, polyline: false }} />
-          {importedGeoJson && <GeoJSON data={importedGeoJson} style={{ color: '#a4fca1', weight: 3, fillOpacity: 0.2 }} />}
+          <EditControl
+            position="topright"
+            onCreated={handleCreated}
+            draw={{
+              rectangle: true, circle: false, marker: false, polyline: false, circlemarker: false,
+              polygon: { shapeOptions: { color: '#ffffff', weight: 4, fillOpacity: 0.05, className: 'drop-shadow-lg' } }
+            }}
+          />
+          {importedGeoJson && <GeoJSON data={importedGeoJson} style={{ color: '#ffffff', weight: 4, fillOpacity: 0.05, className: 'drop-shadow-lg' }} />}
         </FeatureGroup>
       </MapContainer>
     </div>

@@ -1,59 +1,45 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import logging
-
-# This matches the function name in services/chm_inference.py
 from services.chm_inference import run_chm_inference
 
-# Configure Logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+# Sabhi origins allow kiye taaki React (3000) aur Flask (5000) baat kar sakein
+CORS(app)
 
-# Enable CORS so your React frontend (port 5173/3000) can talk to this backend
-CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-@app.route('/api/chm/analyze', methods=['POST'])
+@app.route('/api/chm/predict', methods=['POST'])
 def analyze_chm():
     try:
         data = request.json
         if not data:
-            return jsonify({"status": "error", "message": "No data provided"}), 400
+            return jsonify({"status": "error", "message": "No payload received"}), 400
 
-        # Extract polygon and year from the request
-        polygon = data.get('polygon')
-        year = data.get('year', 2021) # Default to 2021 if not specified
+        # Frontend sends 'geojson', fallback to 'polygon' for flexibility
+        polygon = data.get('geojson') or data.get('polygon')
+        year = data.get('year', 2026) # Default to 2026
 
         if not polygon:
-            return jsonify({"status": "error", "message": "No polygon boundary provided"}), 400
+            return jsonify({"status": "error", "message": "No boundary (geojson) provided"}), 400
 
-        logger.info(f"🚀 Running CHM Analysis for year: {year}")
-
-        # Execute the inference logic
+        logger.info(f"🚀 Running Analysis for Year: {year}")
+        
+        # Execute the heavy processing logic
         result = run_chm_inference(polygon, year)
 
-        if result:
-            # Successfully returning the hierarchy: Area -> Lidar -> Eligibility -> Biomass
-            return jsonify(result), 200
-        else:
-            return jsonify({
-                "status": "error", 
-                "message": "GEE returned no data for this boundary/year. Try a larger area."
-            }), 404
+        # Check if the internal service reported an error
+        if result.get("status") == "error":
+            logger.error(f"❌ Inference Error: {result.get('message')}")
+            return jsonify(result), 500
+
+        return jsonify(result), 200
 
     except Exception as e:
-        logger.error(f"❌ Server Error: {str(e)}")
-        return jsonify({
-            "status": "error", 
-            "message": f"Internal Server Error: {str(e)}"
-        }), 500
-
-@app.route('/health', methods=['GET'])
-def health_check():
-    return jsonify({"status": "healthy", "service": "Sylithe CHM Engine"}), 200
+        logger.error(f"❌ Server Exception: {str(e)}")
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    # Running on port 5000
-    print("✨ Sylithe Backend active on http://localhost:5000")
+    # Running on 0.0.0.0 makes it accessible on your local network
     app.run(host='0.0.0.0', port=5000, debug=True)

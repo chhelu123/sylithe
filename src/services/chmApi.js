@@ -1,11 +1,21 @@
-export async function runChmAnalysis(geojson) {
-    const res = await fetch("http://localhost:5000/chm/run", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ geometry: geojson })
+const API_BASE_URL = 'http://localhost:5000/api';
+
+export const analyzeCHM = async (polygon, year) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/chm/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ polygon, year }),
     });
-  
-    if (!res.ok) throw new Error("CHM analysis failed");
-    return res.json();
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Analysis failed');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error("API Call Error:", error);
+    throw error;
   }
-  
+};
