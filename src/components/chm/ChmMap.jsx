@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, FeatureGroup, GeoJSON, useMap, Marker, Circle } from "react-leaflet";
+import { MapContainer, TileLayer, FeatureGroup, GeoJSON, useMap, Marker, Circle, CircleMarker, Popup } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 import { FileUp } from "lucide-react";
 import "leaflet/dist/leaflet.css";
@@ -24,9 +24,17 @@ const LiveLocation = () => {
   ) : null;
 };
 
+const getChmColor = (height) => {
+  if (height < 10) return "#a4fca1";
+  if (height < 20) return "#70e4f3";
+  if (height < 30) return "#4b98fa";
+  return "#8a2be2";
+};
+
 const ChmMap = ({ onPolygonComplete, result, activeLayers = new Set() }) => {
   const [importedGeoJson, setImportedGeoJson] = useState(null);
   const tileUrls = result?.status === "success" ? result.results?.tiles : {};
+  const chmPoints = result?.status === "success" ? result.results?.model_prediction?.points : null;
 
   const handleCreated = (e) => {
     const geojson = e.layer.toGeoJSON();
@@ -68,7 +76,6 @@ const ChmMap = ({ onPolygonComplete, result, activeLayers = new Set() }) => {
 
           return (
             <TileLayer
-              // FIXED: Added URL to key so React refreshes when URL changes
               key={`${id}-${url}`}
               url={url}
               opacity={isPatch ? 1.0 : 0.7}
@@ -76,6 +83,27 @@ const ChmMap = ({ onPolygonComplete, result, activeLayers = new Set() }) => {
             />
           );
         })}
+
+        {/* --- CHM POINTS LAYER --- */}
+        {activeLayers.has('chm_points') && chmPoints && chmPoints.map((pt, idx) => (
+          <CircleMarker
+            key={idx}
+            center={[pt[0], pt[1]]}
+            radius={4}
+            pathOptions={{
+              color: getChmColor(pt[2]),
+              fillColor: getChmColor(pt[2]),
+              fillOpacity: 0.8,
+              weight: 0
+            }}
+          >
+            <Popup className="font-sans text-[13px]">
+              <div className="text-center font-bold">
+                Height: <span style={{ color: getChmColor(pt[2]) }}>{pt[2]}m</span>
+              </div>
+            </Popup>
+          </CircleMarker>
+        ))}
 
         <LiveLocation />
 

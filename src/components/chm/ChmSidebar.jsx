@@ -2,23 +2,30 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronRight, ChevronLeft, Eye, EyeOff, Ruler, Info } from "lucide-react";
 
 // The new hollow-pill style row (used for sub-items)
-const ClassificationRow = ({ title, area, color, onToggle, isActive }) => (
-  <div className="flex items-center justify-between py-2 pl-4 hover:bg-white/[0.05] transition-all group cursor-pointer rounded-r-lg mr-2" onClick={onToggle}>
-    <div className="flex items-center gap-3">
-      {/* Hollow Pill inside */}
-      <div className="flex items-center justify-center w-3 h-[18px]">
-        <div className={`w-[6px] h-[14px] rounded-full border-[1.5px] ${color}`} />
+const ClassificationRow = ({ title, area, color, onToggle, isActive }) => {
+  const isHex = color?.startsWith('#');
+
+  return (
+    <div className="flex items-center justify-between py-2 pl-4 hover:bg-white/[0.05] transition-all group cursor-pointer rounded-r-lg mr-2" onClick={onToggle}>
+      <div className="flex items-center gap-3">
+        {/* Hollow Pill inside */}
+        <div className="flex items-center justify-center w-3 h-[18px]">
+          <div
+            className={`w-[6px] h-[14px] rounded-full border-[1.5px] ${isHex ? '' : color}`}
+            style={isHex ? { borderColor: color } : {}}
+          />
+        </div>
+        <span className="text-[13px] text-gray-200 group-hover:text-white font-medium">{title}</span>
       </div>
-      <span className="text-[13px] text-gray-200 group-hover:text-white font-medium">{title}</span>
+      <div className="flex items-center gap-3 pr-2">
+        <span className="text-[12px] text-gray-300 font-mono tracking-tight">{area || 0}</span>
+        <button className={`p-1 rounded transition-all ${isActive ? 'text-white' : 'text-gray-500 hover:text-white'}`}>
+          {isActive ? <Eye size={14} /> : <EyeOff size={14} />}
+        </button>
+      </div>
     </div>
-    <div className="flex items-center gap-3 pr-2">
-      <span className="text-[12px] text-gray-300 font-mono tracking-tight">{area || 0} ha</span>
-      <button className={`p-1 rounded transition-all ${isActive ? 'text-white' : 'text-gray-500 hover:text-white'}`}>
-        {isActive ? <Eye size={14} /> : <EyeOff size={14} />}
-      </button>
-    </div>
-  </div>
-);
+  );
+};
 
 const TimelineSlider = ({ label, yearRange, setYearRange, area, onRefresh, color }) => (
   <div className="pl-4 pr-6 py-4 space-y-3">
@@ -105,16 +112,42 @@ export default function ChmSidebar({
             </div>
 
             {data?.model_prediction ? (
-              <div className="grid grid-cols-2 gap-4 px-2">
-                <div className="bg-black/20 p-5 rounded-xl border border-white/10 shadow-inner">
-                  <p className="text-[11px] text-gray-400 uppercase tracking-widest font-black mb-2">Average Height</p>
-                  <p className="text-3xl font-black text-[#a4fca1]">{data.model_prediction.avg}m</p>
+              <>
+                <div className="grid grid-cols-2 gap-4 px-2 mb-8">
+                  <div className="bg-black/20 p-5 rounded-xl border border-white/10 shadow-inner">
+                    <p className="text-[11px] text-gray-400 uppercase tracking-widest font-black mb-2">Average Height</p>
+                    <p className="text-3xl font-black text-[#a4fca1]">{data.model_prediction.avg}m</p>
+                  </div>
+                  <div className="bg-black/20 p-5 rounded-xl border border-white/10 shadow-inner">
+                    <p className="text-[11px] text-gray-400 uppercase tracking-widest font-black mb-2">Max Height</p>
+                    <p className="text-3xl font-black text-white">{data.model_prediction.max}m</p>
+                  </div>
                 </div>
-                <div className="bg-black/20 p-5 rounded-xl border border-white/10 shadow-inner">
-                  <p className="text-[11px] text-gray-400 uppercase tracking-widest font-black mb-2">Max Height</p>
-                  <p className="text-3xl font-black text-white">{data.model_prediction.max}m</p>
-                </div>
-              </div>
+
+                {/* Pixel Distribution List */}
+                {data.model_prediction.distribution && (
+                  <div className="space-y-1">
+                    <div className="px-2 mb-3">
+                      <span className="text-[12px] uppercase tracking-widest text-gray-400 font-bold">Predicted Pixel Distribution</span>
+                    </div>
+                    {Object.entries(data.model_prediction.distribution).map(([label, info]) => {
+                      // Strip "#" for the Tailwind border class fallback, or just pass a style
+                      // Actually, our ClassificationRow uses a Tailwind class `color`, which won't work with arbitrary hex dynamically unless safelisted.
+                      // Let's pass the raw hex color as a prop and update ClassificationRow above to use style if color doesn't start with "border-".
+                      return (
+                        <ClassificationRow
+                          key={label}
+                          title={label}
+                          area={`${info.count} px`}
+                          color={info.color}
+                          isActive={activeLayers.has('chm_points')}
+                          onToggle={() => onLayerToggle('chm_points')}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+              </>
             ) : (
               <div className="bg-white/[0.02] p-8 mx-2 rounded-xl border border-dashed border-white/10 text-center">
                 <p className="text-gray-400 text-[13px] leading-relaxed">Run analysis on a forested area to see height data.</p>

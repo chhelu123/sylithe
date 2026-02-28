@@ -80,6 +80,14 @@ def run_chm_inference(geojson, year):
         
         # Maintain variables for frontend response
         avg_h, max_h = 0, 0
+        chm_points = []
+        chm_distribution = {
+            "0-10m": {"count": 0, "color": "#a4fca1"},
+            "10-20m": {"count": 0, "color": "#70e4f3"},
+            "20-30m": {"count": 0, "color": "#4b98fa"},
+            ">30m": {"count": 0, "color": "#8a2be2"}
+        }
+
         if features:
             # --- PREDICTION ---
             df = pd.DataFrame([f['properties'] for f in features])
@@ -90,10 +98,27 @@ def run_chm_inference(geojson, year):
             cols = getattr(model, 'feature_names_in_', [])
             X = df.reindex(columns=cols, fill_value=0)
             y_heights = np.expm1(model.predict(X))
-            valid = y_heights[(y_heights >= 1.0) & (y_heights < 95)]
-            if len(valid) > 0:
-                avg_h = round(float(np.mean(valid)), 1)
-                max_h = round(float(np.max(valid)), 1)
+            valid_mask = (y_heights >= 1.0) & (y_heights < 95)
+            
+            valid_heights = y_heights[valid_mask]
+            
+            if len(valid_heights) > 0:
+                avg_h = round(float(np.mean(valid_heights)), 1)
+                max_h = round(float(np.max(valid_heights)), 1)
+                
+                valid_lats = df['lat'].values[valid_mask]
+                lons = np.array([f['geometry']['coordinates'][0] for f in features])
+                valid_lons = lons[valid_mask]
+
+                for lon, lat, h in zip(valid_lons, valid_lats, valid_heights):
+                    h_val = float(h)
+                    # Pack into compact array for frontend map performance
+                    chm_points.append([round(float(lat), 5), round(float(lon), 5), round(h_val, 1)])
+                    
+                    if h_val < 10: chm_distribution["0-10m"]["count"] += 1
+                    elif h_val < 20: chm_distribution["10-20m"]["count"] += 1
+                    elif h_val < 30: chm_distribution["20-30m"]["count"] += 1
+                    else: chm_distribution[">30m"]["count"] += 1
         
         # Maintain older code LULC structures for frontend sidebar logic
         def to_ha(px): return round((float(px) * 100) / 10000, 2)
@@ -123,7 +148,12 @@ def run_chm_inference(geojson, year):
             "results": {
                 "total_area_ha": total_ha,
                 "eligibility": {"percentage": round(suitability_pct, 1)},
-                "model_prediction": {"avg": avg_h, "max": max_h},
+                "model_prediction": {
+                    "avg": avg_h, 
+                    "max": max_h,
+                    "points": chm_points,
+                    "distribution": chm_distribution
+                },
                 "lulc": {
                     "cropland": to_ha(lc_stats.get('40', 0)), 
                     "grass": to_ha(lc_stats.get('30', 0)) + to_ha(lc_stats.get('20', 0)),
