@@ -6,5 +6,39 @@
 
 /* Basic body reset */
 body {
-    @apply bg-white text-sylitheDark font-sans antialiased;
+  @apply bg-white text-sylitheDark font-sans antialiased;
+}
+
+/* Custom Animation for "trees moving from top" effect */
+@keyframes drone-pan {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  100% {
+    transform: scale(1.15) translate(-2%, -2%);
+  }
+}
+
+.animate-drone-pan {
+  animation: drone-pan 30s linear infinite alternate;
+}
+
+/* Floating arrow animation for pipeline section */
+@keyframes arrowFloat {
+
+  0%,
+  100% {
+    transform: translateX(0px);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: translateX(6px);
+    opacity: 1;
+  }
+}
+
+.animate-arrow-float {
+  animation: arrowFloat 2s ease-in-out infinite;
 }

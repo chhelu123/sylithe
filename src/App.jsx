@@ -28,6 +28,13 @@ import DcabModel from './pages/solutions/methodology/DcabModel';
 import AgbCalculation from './pages/solutions/methodology/AgbCalculation';
 import ChmDashboard from './pages/solutions/methodology/ChmDashboard';
 
+// --- LEGAL PAGES ---
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+
+// --- ABOUT US ---
+import AboutUs from './pages/AboutUs';
+
 // --- HOME ---
 const Home = () => <HeroSection />;
 
@@ -39,7 +46,7 @@ function Layout({ children }) {
 
   // Routes where Navbar & Footer must be hidden
   const isFullScreenApp =
-    location.pathname === '/chm-verification';
+    location.pathname === '/chm-verification' || location.pathname === '/signup';
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-white flex flex-col">
@@ -80,8 +87,15 @@ function App() {
           <Route path="/methodology/dcab" element={<DcabModel />} />
           <Route path="/methodology/agb" element={<AgbCalculation />} />
 
+          {/* --- ABOUT US --- */}
+          <Route path="/about" element={<AboutUs />} />
+
           {/* --- FULLSCREEN CHM DASHBOARD --- */}
           <Route path="/chm-verification" element={<ChmDashboard />} />
+
+          {/* --- LEGAL ROUTES --- */}
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
         </Routes>
       </Layout>

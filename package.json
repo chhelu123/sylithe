@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.23.26",
+    "dotted-map": "^3.1.0",
+    "framer-motion": "^12.35.2",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
     "leaflet-geometryutil": "^0.10.3",
@@ -23,7 +26,7 @@
     "react-leaflet-draw": "^0.21.0",
     "react-router-dom": "^7.11.0",
     "recharts": "^3.7.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

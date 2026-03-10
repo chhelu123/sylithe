@@ -3,14 +3,16 @@ import { HiCheck, HiArrowRight, HiGlobe, HiShieldCheck, HiChartBar } from "react
 import { motion } from 'framer-motion';
 
 // --- IMAGE IMPORTS ---
-import chmHeroImage from '../../../assets/tree.jpg';
-import measurementGapImage from '../../../assets/tree22.png';
-import solutionImage from '../../../assets/tree20.jpg';
-import processImage from '../../../assets/lulc8.png';
-import developersImage from '../../../assets/lulc1.png';
-import buyersImage from '../../../assets/lulc4.png';
+import chmHeroImage from '../../../assets/chm12.png';
+import measurementGapImage1 from '../../../assets/tree22.png';
+import measurementGapImage2 from '../../../assets/chm14.png';
+import measurementGapImage3 from '../../../assets/chm19.png';
+import solutionImage from '../../../assets/chm16.png';
+import processImage from '../../../assets/chm18.png';
+import developersImage from '../../../assets/chm20.png';
+import buyersImage from '../../../assets/chm21.png';
 import accuracyImage from '../../../assets/Tree50.png';
-import coverageImage from '../../../assets/tree9.jpg';
+import coverageImage from '../../../assets/chm22.png';
 import testimonialImage from '../../../assets/tree8.jpg';
 
 // --- EXACT STYLING FROM DCAB MODEL ---
@@ -202,10 +204,9 @@ const ChmModel = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                className="px-8 py-4 rounded-full font-medium text-lg transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 hover:opacity-90"
+                className="px-8 py-4 rounded-full font-medium text-lg transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 hover:bg-[#062125] text-white"
                 style={{
-                  backgroundColor: cdStyle.accentColor,
-                  color: '#064e3b',
+                  backgroundColor: '#08292f',
                   fontFamily: cdStyle.bodyFont,
                 }}
               >
@@ -267,17 +268,17 @@ const ChmModel = () => {
               {
                 title: "Expensive & Slow",
                 desc: "Manual field surveys cost thousands per site and take months to complete.",
-                img: measurementGapImage
+                img: measurementGapImage1
               },
               {
                 title: "Unreliable Indices",
                 desc: "Optical greenness confuses crops for forests and misses degradation entirely.",
-                img: solutionImage
+                img: measurementGapImage2
               },
               {
                 title: "Outdated Maps",
                 desc: "Static biomass estimates can't detect the disturbances that threaten permanence.",
-                img: processImage
+                img: measurementGapImage3
               }
             ].map((item, index) => (
               <motion.div
@@ -391,70 +392,7 @@ const ChmModel = () => {
         </div>
       </section>
 
-      {/* ================= 5. BUILT FOR CARBON MARKETS (Use Cases) ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <motion.div className="text-center max-w-4xl mx-auto mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-            <span
-              className="font-medium tracking-widest uppercase text-sm mb-4 block"
-              style={{ color: 'rgba(8, 41, 47, 0.5)', fontFamily: cdStyle.bodyFont }}
-            >
-              Use Cases
-            </span>
-            <CDHeading as="h2" size="section">High-integrity intelligence for every market participant.</CDHeading>
-          </motion.div>
 
-          <motion.div
-            className="grid md:grid-cols-3 gap-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerStagger}
-          >
-            {[
-              {
-                icon: HiChartBar,
-                title: "For Project Developers",
-                desc: "Accelerate issuance timelines. Provide buyers with pre-issuance monitoring data that proves additionality before credits hit the market.",
-                img: developersImage
-              },
-              {
-                icon: HiShieldCheck,
-                title: "For Corporate Buyers",
-                desc: "De-risk your portfolio. Verify that purchased credits represent real biomass growth, not spreadsheet fantasy.",
-                img: buyersImage
-              },
-              {
-                icon: HiGlobe,
-                title: "For Investors",
-                desc: "Due diligence at scale. Screen hundreds of sites simultaneously for carbon potential and permanence risk.",
-                img: coverageImage
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={itemFade}
-                className="group rounded-3xl border overflow-hidden hover:shadow-xl transition-all duration-300 bg-white"
-                style={{ borderColor: 'rgba(8, 41, 47, 0.08)' }}
-              >
-                <div className="h-64 overflow-hidden">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                </div>
-                <div className="p-8">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-6"
-                    style={{ backgroundColor: cdStyle.lightAccent, color: cdStyle.accentColor }}
-                  >
-                    <item.icon className="text-2xl" />
-                  </div>
-                  <CDHeading as="h3" size="card" className="mb-3">{item.title}</CDHeading>
-                  <CDBody className="mb-0">{item.desc}</CDBody>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
       {/* ================= 6. THE ACCURACY ADVANTAGE (Dark Section) ================= */}
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#08292F] text-white">
@@ -599,7 +537,7 @@ const ChmModel = () => {
         </div>
       </section>
 
-      {/* ================= 9. TRUSTED BY LEADERS (Testimonial) ================= */}
+      {/* ================= 9. MISSION (Commitment) ================= */}
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -616,34 +554,34 @@ const ChmModel = () => {
                   className="font-medium tracking-widest uppercase text-sm mb-4 block"
                   style={{ color: cdStyle.accentColor, fontFamily: cdStyle.bodyFont }}
                 >
-                  Testimonial
+                  Mission
                 </span>
                 <CDHeading as="h2" size="card" className="mb-6">
-                  Trusted by industry leaders
+                  Understanding Forests at Planetary Scale
                 </CDHeading>
                 <blockquote
-                  className="text-2xl md:text-3xl font-normal leading-relaxed mb-8"
-                  style={{ color: cdStyle.color, fontFamily: cdStyle.bodyFont }}
+                  className="text-xl md:text-2xl font-normal leading-relaxed mb-8"
+                  style={{ color: cdStyle.color, fontFamily: cdStyle.bodyFont, fontStyle: 'italic' }}
                 >
-                  "Sylithe's canopy data gave us the confidence to invest in a 50,000-hectare reforestation project. We knew the biomass potential before we broke ground."
+                  "Sylithe develops advanced geospatial models that convert satellite data into quantifiable insights on canopy structure, biomass, and carbon dynamics. Through AI-driven analysis and transparent methodologies, we aim to improve how forests are measured, monitored, and understood globally."
                 </blockquote>
                 <div>
                   <div
                     className="font-bold text-lg"
                     style={{ color: cdStyle.color, fontFamily: cdStyle.headingFont }}
                   >
-                    Director of Carbon
+                    The Sylithe Vision
                   </div>
                   <div
                     className="text-gray-600"
                     style={{ fontFamily: cdStyle.bodyFont }}
                   >
-                    Major Investment Firm
+                    Building the foundation
                   </div>
                 </div>
               </div>
               <div className="hidden md:block">
-                <img src={testimonialImage} alt="Client" className="rounded-2xl shadow-lg w-full object-cover h-64" />
+                <img src={testimonialImage} alt="Planetary Scale" className="rounded-2xl shadow-lg w-full object-cover h-64 border border-white/20" />
               </div>
             </div>
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#84cc16]/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
@@ -666,8 +604,8 @@ const ChmModel = () => {
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button onClick={() => window.location.href = '/chm-verification'}
-                className="px-10 py-4 rounded-full font-medium text-lg transition-all shadow-xl active:scale-95 hover:opacity-90"
-                style={{ backgroundColor: cdStyle.accentColor, color: '#064e3b', fontFamily: cdStyle.bodyFont }}
+                className="px-10 py-4 rounded-full font-medium text-lg transition-all shadow-xl active:scale-95 hover:bg-[#062125] text-white"
+                style={{ backgroundColor: '#08292f', fontFamily: cdStyle.bodyFont }}
               >
                 Launch Dashboard
               </button>

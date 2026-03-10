@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, FeatureGroup, GeoJSON, useMap, Marker, Circle, CircleMarker, Popup } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 import { FileUp } from "lucide-react";
@@ -8,14 +8,38 @@ import "leaflet-draw/dist/leaflet.draw.css";
 const LiveLocation = () => {
   const [position, setPosition] = useState(null);
   const map = useMap();
+  const hasFlown = useRef(false);
+
   useEffect(() => {
     if (!navigator.geolocation) return;
-    const watchId = navigator.geolocation.watchPosition((pos) => {
+
+    const handlePosition = (pos) => {
       const latlng = [pos.coords.latitude, pos.coords.longitude];
       setPosition(latlng);
-    });
+
+      if (!hasFlown.current) {
+        map.setView(latlng, 15); // Instant jump instead of slow animation
+        hasFlown.current = true;
+      }
+    };
+
+    // Fast initial fetch using cached position (up to 1 minute old)
+    navigator.geolocation.getCurrentPosition(
+      handlePosition,
+      () => { },
+      { maximumAge: 60000, timeout: 2000, enableHighAccuracy: false }
+    );
+
+    // Watch for high-accuracy updates
+    const watchId = navigator.geolocation.watchPosition(
+      handlePosition,
+      (err) => console.log(err),
+      { enableHighAccuracy: true }
+    );
+
     return () => navigator.geolocation.clearWatch(watchId);
   }, [map]);
+
   return position ? (
     <>
       <Marker position={position} />
