@@ -5,9 +5,9 @@ import { HiCheck } from "react-icons/hi";
 
 // --- IMAGES ---
 import treeRight from '../assets/Tree50.png';
-import satelliteImg from '../assets/tree5.jpg';
-import graphImg from '../assets/tree9.jpg';
-import indiaImg from '../assets/tree8.jpg';
+import satelliteImg from '../assets/chm22.png';
+import graphImg from '../assets/chm22.png';
+import indiaImg from '../assets/home1.png';
 
 
 // --- ANIMATION VARIANTS ---
@@ -54,10 +54,10 @@ const HeroSection = () => {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full bg-white overflow-hidden font-sans text-[#0F172A]">
+    <div className="w-full bg-[#F1F1F1] overflow-hidden font-sans text-[#0F172A]">
 
       {/* ================= 1. MAIN HERO SECTION ================= */}
-      <section className="relative w-full h-screen flex items-center overflow-hidden bg-white">
+      <section className="relative w-full h-screen flex items-center overflow-hidden bg-[#F1F1F1]">
         <div className="relative z-10 w-full h-full grid lg:grid-cols-2 items-center px-6 md:px-12 lg:px-16">
 
           {/* --- LEFT COLUMN: Text --- */}
@@ -126,7 +126,7 @@ const HeroSection = () => {
 
 
       {/* ================= 2. BENEFITS SECTION ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-gray-50/50 border-y border-gray-100">
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#E8E8E8] border-y border-gray-100">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -155,7 +155,7 @@ const HeroSection = () => {
               { title: "Real-time intelligence", desc: "Accelerate time to issuance. Our continuous monitoring replaces static reports with live data." }
             ].map((item, index) => (
               <motion.div key={index} variants={textVariant} className="flex flex-col gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#84cc16] flex items-center justify-center text-white shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-[#16a34a] flex items-center justify-center text-white shadow-sm">
                   <HiCheck className="text-xl" />
                 </div>
                 <h3 className="text-xl font-[Telegraf_Bold,var(--font-sans)] font-bold text-[#0F172A] tracking-tight">{item.title}</h3>
@@ -168,7 +168,7 @@ const HeroSection = () => {
 
 
       {/* ================= 3. WHAT WE DO (Full Page Scroll Layout) ================= */}
-      <section className="py-20 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-20 px-6 md:px-12 lg:px-24 bg-[#F1F1F1]">
 
         <motion.div
           className="max-w-4xl mx-auto text-center mb-12"
@@ -177,7 +177,7 @@ const HeroSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-[#84cc16] font-[Telegraf_Bold,var(--font-sans)] font-bold tracking-widest uppercase text-xs mb-4 block">
+          <span className="text-[#16a34a] font-[Telegraf_Bold,var(--font-sans)] font-bold tracking-widest uppercase text-xs mb-4 block">
             WHAT WE DO
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-[Telegraf_Bold,var(--font-sans)] font-bold text-[#0F172A] leading-tight tracking-tight">
@@ -214,7 +214,7 @@ const HeroSection = () => {
                   "Surfaces risk early, not retrospectively"
                 ].map((item, i) => (
                   <motion.li key={i} variants={textVariant} className="flex items-center gap-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-semibold text-lg tracking-tight">
-                    <span className="w-2 h-2 rounded-full bg-[#84cc16]" />
+                    <span className="w-2 h-2 rounded-full bg-[#16a34a]" />
                     {item}
                   </motion.li>
                 ))}
@@ -263,7 +263,7 @@ const HeroSection = () => {
                   "Pre-issuance risk detection"
                 ].map((item, i) => (
                   <motion.li key={i} variants={textVariant} className="flex items-center gap-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-semibold text-lg tracking-tight">
-                    <span className="w-2 h-2 rounded-full bg-[#84cc16]" />
+                    <span className="w-2 h-2 rounded-full bg-[#16a34a]" />
                     {item}
                   </motion.li>
                 ))}
@@ -305,7 +305,7 @@ const HeroSection = () => {
                   "Permanence and reversal indicators"
                 ].map((item, i) => (
                   <motion.li key={i} variants={textVariant} className="flex items-center gap-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-semibold text-lg tracking-tight">
-                    <span className="w-2 h-2 rounded-full bg-[#84cc16]" />
+                    <span className="w-2 h-2 rounded-full bg-[#16a34a]" />
                     {item}
                   </motion.li>
                 ))}

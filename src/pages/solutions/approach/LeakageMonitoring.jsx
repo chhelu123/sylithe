@@ -2,7 +2,7 @@ import React from 'react';
 
 const LeakageMonitoring = () => {
   return (
-    <div className="w-full min-h-screen px-12 py-16 bg-white">
+    <div className="w-full min-h-screen px-12 py-16 bg-[#F1F1F1]">
       <h1 className="text-3xl font-semibold text-gray-900">
         Leakage Monitoring
       </h1>

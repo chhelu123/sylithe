@@ -6,7 +6,7 @@
 
 /* Basic body reset */
 body {
-  @apply bg-white text-sylitheDark font-sans antialiased;
+  @apply bg-[#F1F1F1] text-sylitheDark font-sans antialiased;
 }
 
 /* Custom Animation for "trees moving from top" effect */

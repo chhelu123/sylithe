@@ -1,104 +1,166 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { HiOutlineArrowRight } from "react-icons/hi";
-// Importing official brand icons
-import { FaLinkedinIn, FaYoutube, FaXTwitter } from "react-icons/fa6";
+"use client"
+
+import * as React from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Facebook, Instagram, Linkedin, Moon, Send, Sun, Twitter } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Footer = () => {
+  const [isDarkMode, setIsDarkMode] = React.useState(true)
+
+  React.useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
+    }
+  }, [isDarkMode])
+
   return (
-    <footer className="bg-[#0F172A] text-white pt-24 pb-12 px-6 md:px-12 lg:px-24 border-t border-white/5 font-sans">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
+    <footer className="relative border-t border-gray-800 bg-[#081C15] text-white transition-colors duration-300">
+      <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8 max-w-7xl">
+        <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-5">
 
-        {/* --- COLUMN 1: BRAND & SOCIAL --- */}
-        <div className="lg:col-span-2">
-          <Link to="/" className="flex items-center gap-2 mb-6 cursor-pointer">
-            <div className="h-8 w-8 rounded-full border-[3px] border-l-[#84cc16] border-t-[#84cc16] border-r-gray-600 border-b-gray-600 rotate-45"></div>
-            <span className="text-2xl font-bold tracking-tight text-white">Sylithe</span>
-          </Link>
-          <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-sm">
-            The carbon intelligence platform enabling confident climate action. We combine satellite-native MRV with dynamic baselines to ensure high-integrity carbon credits.
-          </p>
-
-          {/* Official Social Logos */}
-          <div className="flex gap-4">
-            <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#0077b5] hover:text-white transition-all cursor-pointer">
-              <FaLinkedinIn className="text-lg" />
-            </a>
-            <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-black hover:text-white hover:border hover:border-white/20 transition-all cursor-pointer">
-              <FaXTwitter className="text-lg" />
-            </a>
-            <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#FF0000] hover:text-white transition-all cursor-pointer">
-              <FaYoutube className="text-lg" />
-            </a>
+          <div className="relative lg:col-span-2">
+            <h2 className="mb-4 text-3xl font-[Telegraf_Bold,var(--font-sans)] font-bold tracking-tight">Stay Connected</h2>
+            <p className="mb-6 text-gray-400">
+              Join our newsletter for the latest updates and exclusive offers.
+            </p>
+            <form className="relative max-w-sm">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="pr-12 backdrop-blur-sm bg-[#0a231a] border-gray-800 text-white placeholder:text-gray-500 rounded-lg focus-visible:ring-[#16a34a]"
+              />
+              <Button
+                type="submit"
+                size="icon"
+                className="absolute right-1 top-1 h-8 w-8 rounded-full bg-[#16a34a] text-[#081C15] transition-transform hover:scale-105 hover:bg-[#92d02e]"
+              >
+                <Send className="h-4 w-4" />
+                <span className="sr-only">Subscribe</span>
+              </Button>
+            </form>
+            <div className="absolute -right-4 top-0 h-24 w-24 rounded-full bg-[#16a34a]/5 blur-2xl" />
           </div>
+
+          <div>
+            <h3 className="mb-4 text-lg font-bold text-gray-300">Quick Links</h3>
+            <nav className="space-y-3 text-sm">
+              <Link to="/" className="block text-gray-400 transition-colors hover:text-[#16a34a]">
+                Home
+              </Link>
+              <Link to="/about" className="block text-gray-400 transition-colors hover:text-[#16a34a]">
+                About Us
+              </Link>
+              <Link to="/chm-verification" className="block text-gray-400 transition-colors hover:text-[#16a34a]">
+                Platform
+              </Link>
+            </nav>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-lg font-bold text-gray-300">Our Methodology</h3>
+            <nav className="space-y-3 text-sm">
+              <Link to="/methodology/lulc" className="block text-gray-400 transition-colors hover:text-[#16a34a]">
+                LULC Classification
+              </Link>
+              <Link to="/methodology/chm" className="block text-gray-400 transition-colors hover:text-[#16a34a]">
+                CHM Model
+              </Link>
+              <Link to="/methodology/dcab" className="block text-gray-400 transition-colors hover:text-[#16a34a]">
+                DCAB Model
+              </Link>
+              <Link to="/methodology/agb" className="block text-gray-400 transition-colors hover:text-[#16a34a]">
+                AGB Calculation
+              </Link>
+            </nav>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-lg font-bold text-gray-300">Contact Us</h3>
+            <address className="space-y-3 text-sm not-italic text-gray-400">
+              <p>123 Innovation Street</p>
+              <p>Tech City, TC 12345</p>
+              <p>Phone: (123) 456-7890</p>
+              <p className="hover:text-[#16a34a] transition-colors"><a href="mailto:hello@sylithe.com">hello@sylithe.com</a></p>
+            </address>
+          </div>
+
+          <div className="relative">
+            <h3 className="mb-4 text-lg font-bold text-gray-300">Follow Us</h3>
+            <div className="mb-6 flex space-x-4">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="icon" className="rounded-full bg-transparent border-gray-700 hover:bg-[#16a34a] hover:text-[#081C15] hover:border-[#16a34a] transition-colors">
+                      <Facebook className="h-4 w-4" />
+                      <span className="sr-only">Facebook</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-[#081C15] text-white border-gray-800">
+                    <p>Follow us on Facebook</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="icon" className="rounded-full bg-transparent border-gray-700 hover:bg-[#16a34a] hover:text-[#081C15] hover:border-[#16a34a] transition-colors">
+                      <Twitter className="h-4 w-4" />
+                      <span className="sr-only">Twitter</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-[#081C15] text-white border-gray-800">
+                    <p>Follow us on Twitter</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="icon" className="rounded-full bg-transparent border-gray-700 hover:bg-[#16a34a] hover:text-[#081C15] hover:border-[#16a34a] transition-colors">
+                      <Linkedin className="h-4 w-4" />
+                      <span className="sr-only">LinkedIn</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-[#081C15] text-white border-gray-800">
+                    <p>Connect with us on LinkedIn</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            {/* Dark Mode toggle hidden as it's a fixed dark theme */}
+          </div>
+
         </div>
 
-        {/* --- COLUMN 2: SOLUTIONS (Our Approach) --- */}
-        <div>
-          <h4 className="font-bold text-white mb-6 tracking-wide">Solutions</h4>
-          <ul className="space-y-4 text-gray-400 text-sm font-medium">
-            <li>
-              <Link to="/solutions/carbon-mapping" className="hover:text-[#84cc16] transition-colors">Carbon Mapping</Link>
-            </li>
-            <li>
-              <Link to="/solutions/dynamic-baselines" className="hover:text-[#84cc16] transition-colors">Dynamic Baselines</Link>
-            </li>
-            <li>
-              <Link to="/solutions/leakage-monitoring" className="hover:text-[#84cc16] transition-colors">Leakage Monitoring</Link>
-            </li>
-            <li>
-              <Link to="/solutions/transparent-reporting" className="hover:text-[#84cc16] transition-colors">Reporting & Audit</Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* --- COLUMN 3: SCIENCE (Methodology) --- */}
-        <div>
-          <h4 className="font-bold text-white mb-6 tracking-wide">Science</h4>
-          <ul className="space-y-4 text-gray-400 text-sm font-medium">
-            <li>
-              <Link to="/methodology/lulc" className="hover:text-[#84cc16] transition-colors">LULC Classification</Link>
-            </li>
-            <li>
-              <Link to="/methodology/chm" className="hover:text-[#84cc16] transition-colors">Canopy Height Model</Link>
-            </li>
-            <li>
-              <Link to="/methodology/dcab" className="hover:text-[#84cc16] transition-colors">DCAB Algorithms</Link>
-            </li>
-            <li>
-              <Link to="/methodology/agb" className="hover:text-[#84cc16] transition-colors">Biomass (AGB)</Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* --- COLUMN 4: COMPANY & ACTION --- */}
-        <div>
-          <h4 className="font-bold text-white mb-6 tracking-wide">Company</h4>
-          <ul className="space-y-4 text-gray-400 text-sm font-medium mb-8">
-            <li><Link to="/platform" className="hover:text-[#84cc16] transition-colors">The Platform</Link></li>
-            <li><Link to="/insights/carbon-accounting" className="hover:text-[#84cc16] transition-colors">Blog & Insights</Link></li>
-            <li><Link to="/" className="hover:text-[#84cc16] transition-colors">Contact Us</Link></li>
-          </ul>
-
-          <button className="w-full bg-[#84cc16] text-[#0F172A] px-5 py-3 rounded-full font-bold text-sm hover:bg-white transition-colors flex items-center justify-between group">
-            Purchase Credits
-            <HiOutlineArrowRight className="group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-      </div>
-
-      {/* --- BOTTOM BAR --- */}
-      <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-        <p>&copy; 2026 Sylithe Inc. All rights reserved.</p>
-        <div className="flex gap-8">
-          <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-          <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
-          <a href="#" className="hover:text-white transition-colors">Cookie Settings</a>
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gray-800 pt-8 text-center md:flex-row">
+          <p className="text-sm text-gray-500">
+            © 2024 Sylithe. All rights reserved.
+          </p>
+          <nav className="flex gap-4 text-sm">
+            <Link to="/privacy" className="text-gray-500 transition-colors hover:text-[#16a34a]">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="text-gray-500 transition-colors hover:text-[#16a34a]">
+              Terms of Service
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

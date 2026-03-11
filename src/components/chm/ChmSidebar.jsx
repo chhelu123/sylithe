@@ -6,7 +6,7 @@ const ClassificationRow = ({ title, area, color, onToggle, isActive }) => {
   const isHex = color?.startsWith('#');
 
   return (
-    <div className="flex items-center justify-between py-2 pl-4 hover:bg-white/[0.05] transition-all group cursor-pointer rounded-r-lg mr-2" onClick={onToggle}>
+    <div className="flex items-center justify-between py-2 pl-4 hover:bg-[#F1F1F1]/[0.05] transition-all group cursor-pointer rounded-r-lg mr-2" onClick={onToggle}>
       <div className="flex items-center gap-3">
         {/* Hollow Pill inside */}
         <div className="flex items-center justify-center w-3 h-[18px]">
@@ -48,7 +48,7 @@ const TimelineSlider = ({ label, yearRange, setYearRange, area, onRefresh, color
         onChange={(e) => setYearRange(parseInt(e.target.value))}
         onMouseUp={(e) => onRefresh(parseInt(e.target.value))}
         onTouchEnd={(e) => onRefresh(parseInt(e.target.value))}
-        className="w-full h-[3px] bg-white/20 rounded-lg appearance-none cursor-pointer focus:outline-none"
+        className="w-full h-[3px] bg-[#F1F1F1]/20 rounded-lg appearance-none cursor-pointer focus:outline-none"
         style={{ accentColor: "white" }}
       />
       <div className="flex justify-between text-[10px] text-gray-400 mt-1.5 font-medium tracking-wide">
@@ -149,7 +149,7 @@ export default function ChmSidebar({
                 )}
               </>
             ) : (
-              <div className="bg-white/[0.02] p-8 mx-2 rounded-xl border border-dashed border-white/10 text-center">
+              <div className="bg-[#F1F1F1]/[0.02] p-8 mx-2 rounded-xl border border-dashed border-white/10 text-center">
                 <p className="text-gray-400 text-[13px] leading-relaxed">Run analysis on a forested area to see height data.</p>
               </div>
             )}
@@ -170,7 +170,7 @@ export default function ChmSidebar({
                 Land must be an eligible classification type without recent deforestation.
               </p>
               <div className="flex items-center gap-4 mt-2">
-                <div className="flex-1 h-[14px] bg-white rounded-md overflow-hidden flex shadow-inner">
+                <div className="flex-1 h-[14px] bg-[#F1F1F1] rounded-md overflow-hidden flex shadow-inner">
                   <div className="h-full bg-[#a4fca1] transition-all duration-700" style={{ width: `${data.eligibility.percentage}%` }} />
                 </div>
                 <span className="text-[14px] font-bold text-white shrink-0">{data.eligibility.percentage}% eligible</span>
@@ -179,7 +179,7 @@ export default function ChmSidebar({
 
             {/* 1. ELIGIBLE LAND */}
             <div>
-              <button onClick={() => setOpen({ ...open, eligible: !open.eligible })} className="w-full flex items-center justify-between py-3 px-1 hover:bg-white/5 rounded-md transition-colors">
+              <button onClick={() => setOpen({ ...open, eligible: !open.eligible })} className="w-full flex items-center justify-between py-3 px-1 hover:bg-[#F1F1F1]/5 rounded-md transition-colors">
                 <div className="flex items-center gap-3">
                   {open.eligible ? <ChevronDown size={14} className="text-white" /> : <ChevronRight size={14} className="text-white" />}
                   <div className="w-[7px] h-[18px] rounded-full bg-[#a4fca1]" />
@@ -195,7 +195,7 @@ export default function ChmSidebar({
                 <div className="pl-6 border-l-[1.5px] border-white/[0.08] ml-[10px] pb-2">
 
                   {/* Nested: Eligible Classification */}
-                  <button onClick={() => setOpen({ ...open, eligibleClass: !open.eligibleClass })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-white/5 rounded transition-colors mt-1 group">
+                  <button onClick={() => setOpen({ ...open, eligibleClass: !open.eligibleClass })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-[#F1F1F1]/5 rounded transition-colors mt-1 group">
                     <div className="flex items-center gap-3">
                       {open.eligibleClass ? <ChevronDown size={14} className="text-gray-500 group-hover:text-white" /> : <ChevronRight size={14} className="text-gray-500 group-hover:text-white" />}
                       <span className="text-[13px] text-gray-200">Eligible land classification</span>
@@ -215,7 +215,7 @@ export default function ChmSidebar({
                   )}
 
                   {/* Burn Area block */}
-                  <button onClick={() => setOpen({ ...open, burn: !open.burn })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-white/5 rounded transition-colors mt-2 group">
+                  <button onClick={() => setOpen({ ...open, burn: !open.burn })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-[#F1F1F1]/5 rounded transition-colors mt-2 group">
                     <div className="flex items-center gap-3">
                       {open.burn ? <ChevronDown size={14} className="text-gray-500 group-hover:text-white" /> : <ChevronRight size={14} className="text-gray-500 group-hover:text-white" />}
                       <span className="text-[13px] text-gray-200">Burn area</span>
@@ -236,10 +236,10 @@ export default function ChmSidebar({
 
             {/* 2. INELIGIBLE LAND */}
             <div className="mt-4">
-              <button onClick={() => setOpen({ ...open, ineligible: !open.ineligible })} className="w-full flex items-center justify-between py-3 px-1 hover:bg-white/5 rounded-md transition-colors">
+              <button onClick={() => setOpen({ ...open, ineligible: !open.ineligible })} className="w-full flex items-center justify-between py-3 px-1 hover:bg-[#F1F1F1]/5 rounded-md transition-colors">
                 <div className="flex items-center gap-3">
                   {open.ineligible ? <ChevronDown size={14} className="text-white" /> : <ChevronRight size={14} className="text-white" />}
-                  <div className="w-[7px] h-[18px] rounded-full bg-white" />
+                  <div className="w-[7px] h-[18px] rounded-full bg-[#F1F1F1]" />
                   <span className="text-[15px] font-semibold tracking-wide text-white">Ineligible land</span>
                 </div>
                 <div className="flex items-center gap-3 pr-2">
@@ -252,7 +252,7 @@ export default function ChmSidebar({
                 <div className="pl-6 border-l-[1.5px] border-white/[0.08] ml-[10px] pb-4">
 
                   {/* Nested: Ineligible Classification */}
-                  <button onClick={() => setOpen({ ...open, ineligibleClass: !open.ineligibleClass })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-white/5 rounded transition-colors mt-1 group">
+                  <button onClick={() => setOpen({ ...open, ineligibleClass: !open.ineligibleClass })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-[#F1F1F1]/5 rounded transition-colors mt-1 group">
                     <div className="flex items-center gap-3">
                       {open.ineligibleClass ? <ChevronDown size={14} className="text-gray-500 group-hover:text-white" /> : <ChevronRight size={14} className="text-gray-500 group-hover:text-white" />}
                       <span className="text-[13px] text-gray-200">Ineligible land classification</span>
@@ -275,7 +275,7 @@ export default function ChmSidebar({
                   )}
 
                   {/* Deforestation Block */}
-                  <button onClick={() => setOpen({ ...open, defor: !open.defor })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-white/5 rounded transition-colors mt-2 group">
+                  <button onClick={() => setOpen({ ...open, defor: !open.defor })} className="w-full flex items-center justify-between py-2 pl-2 hover:bg-[#F1F1F1]/5 rounded transition-colors mt-2 group">
                     <div className="flex items-center gap-3">
                       {open.defor ? <ChevronDown size={14} className="text-gray-500 group-hover:text-white" /> : <ChevronRight size={14} className="text-gray-500 group-hover:text-white" />}
                       <span className="text-[13px] text-gray-200">Non-burn deforestation</span>
@@ -305,7 +305,7 @@ export default function ChmSidebar({
           <button
             onClick={() => onRunAnalysis(2022)}
             disabled={!hasPolygon || isAnalyzing}
-            className="w-full bg-[#a4fca1] text-[#0d0f0d] font-bold py-3.5 rounded-full text-[13px] disabled:opacity-30 uppercase tracking-[0.1em] transition-all hover:bg-white"
+            className="w-full bg-[#a4fca1] text-[#0d0f0d] font-bold py-3.5 rounded-full text-[13px] disabled:opacity-30 uppercase tracking-[0.1em] transition-all hover:bg-[#F1F1F1]"
           >
             {isAnalyzing ? "Processing Region..." : "RUN INITIAL BOUNDARY"}
           </button>
@@ -313,12 +313,12 @@ export default function ChmSidebar({
           <>
             <button
               onClick={onSaveNext}
-              className="w-full bg-[#a4fca1] text-[#0d0f0d] font-bold py-3.5 rounded-full text-[13px] uppercase tracking-[0.1em] hover:bg-white transition-all shadow-lg"
+              className="w-full bg-[#a4fca1] text-[#0d0f0d] font-bold py-3.5 rounded-full text-[13px] uppercase tracking-[0.1em] hover:bg-[#F1F1F1] transition-all shadow-lg"
             >
               SAVE AND NEXT
             </button>
             <button
-              className="w-full border border-white/40 text-white font-bold py-3.5 rounded-full text-[13px] uppercase tracking-[0.1em] hover:bg-white/10 transition-all font-sans"
+              className="w-full border border-white/40 text-white font-bold py-3.5 rounded-full text-[13px] uppercase tracking-[0.1em] hover:bg-[#F1F1F1]/10 transition-all font-sans"
             >
               RETURN TO DASHBOARD
             </button>

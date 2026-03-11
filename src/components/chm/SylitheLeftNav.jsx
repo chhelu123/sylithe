@@ -4,7 +4,7 @@ import treeLogo from '../../assets/treee13.png';
 
 export default function SylitheLeftNav({ activeSection, onSectionChange }) {
     return (
-        <div className="w-[80px] h-screen bg-white border-r border-gray-200 flex flex-col items-center py-6 shrink-0 relative z-[60] shadow-sm">
+        <div className="w-[80px] h-screen bg-[#F1F1F1] border-r border-gray-200 flex flex-col items-center py-6 shrink-0 relative z-[60] shadow-sm">
             {/* Top Logo */}
             <div className="mb-8 cursor-pointer hover:opacity-80 transition-opacity">
                 <img src={treeLogo} alt="Sylithe Logo" className="w-8 h-8 object-contain" />

@@ -7,7 +7,7 @@ const pageImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?
 
 const DynamicBaselines = () => {
   return (
-    <div className="min-h-screen bg-white pt-20 font-sans">
+    <div className="min-h-screen bg-[#F1F1F1] pt-20 font-sans">
       {/* DIFFERENT HERO LAYOUT EXAMPLE */}
       <section className="relative h-[50vh] flex items-center bg-[#064e3b]">
         <div className="relative z-10 px-6 md:px-12 lg:px-24 w-full">

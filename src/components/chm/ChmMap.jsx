@@ -82,7 +82,7 @@ const ChmMap = ({ onPolygonComplete, result, activeLayers = new Set() }) => {
   return (
     <div className="absolute inset-0 z-10">
       <div className="absolute top-4 right-14 z-[1000]">
-        <label className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 border border-gray-100 transition-all group">
+        <label className="flex items-center gap-2 bg-[#F1F1F1] px-4 py-2 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 border border-gray-100 transition-all group">
           <FileUp size={16} className="text-gray-500 group-hover:text-black" />
           <span className="text-[10px] font-bold uppercase tracking-wider text-gray-700">Import AOI</span>
           <input type="file" accept=".geojson,.json" className="hidden" onChange={handleImport} />

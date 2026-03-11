@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 import { HiOutlineArrowRight } from "react-icons/hi";
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 
 // --- 1. IMPORT YOUR PNG LOGO HERE ---
 // Make sure your file is named 'sylithe-logo.png' and is in the 'src/assets' folder
@@ -14,6 +14,19 @@ import { TbTrees, TbSatellite, TbMathFunction, TbBrandCarbon } from "react-icons
 
 const Navbar = () => {
   const [hoveredNav, setHoveredNav] = useState(null);
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+  const location = useLocation();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    // Hide if scrolling down and we aren't at the absolute top
+    if (latest > previous && latest > 50) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   // --- Reusable Dropdown Link Item ---
   const DropdownLinkItem = ({ title, description, to, icon: Icon }) => {
@@ -44,7 +57,7 @@ const Navbar = () => {
 
   // --- PLATFORM MENU CONTENT ---
   const platformDropdownContent = (
-    <div className="w-[900px] bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden grid grid-cols-5">
+    <div className="w-[900px] bg-[#F1F1F1] rounded-2xl shadow-xl border border-gray-200 overflow-hidden grid grid-cols-5">
       <div className="col-span-3 p-8 flex flex-col justify-between">
         <div className="space-y-6">
           <DropdownLinkItem
@@ -69,7 +82,7 @@ const Navbar = () => {
       </div>
       <div className="col-span-2 bg-gray-50 p-8 border-l border-gray-100">
         <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 text-left">Featured Insight</h4>
-        <Link to="/insights/carbon-accounting" className="block bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group/card text-left">
+        <Link to="/insights/carbon-accounting" className="block bg-[#F1F1F1] rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group/card text-left">
           <div className="h-40 bg-gray-200">
             {/* You can replace this image later */}
             <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1000&auto=format&fit=crop" alt="Blog" className="w-full h-full object-cover" />
@@ -90,7 +103,7 @@ const Navbar = () => {
 
   // --- SOLUTIONS DROP DOWN CONTENT ---
   const solutionsDropdownContent = (
-    <div className="w-[380px] bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col p-6 text-left">
+    <div className="w-[380px] bg-[#F1F1F1] rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col p-6 text-left">
       <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-widest mb-4 border-b border-gray-100 pb-3">Our Methodology</h4>
       <div className="space-y-5">
         <Link to="/methodology/lulc" className="block group cursor-pointer group-hover:bg-transparent">
@@ -167,7 +180,15 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full h-20 px-6 md:px-12 lg:px-24 flex items-center justify-between bg-white/95 backdrop-blur-md fixed top-0 z-50 border-b border-gray-100">
+    <motion.nav
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className="w-full h-20 px-6 md:px-12 lg:px-24 flex items-center justify-between bg-[#F1F1F1]/95 backdrop-blur-md fixed top-0 z-50 border-b border-gray-100"
+    >
 
       {/* --- LOGO SECTION --- */}
       <Link to="/" className="flex-shrink-0 cursor-pointer flex items-center gap-3 group">
@@ -188,9 +209,7 @@ const Navbar = () => {
           {solutionsDropdownContent}
         </NavItem>
         <NavItem title="About Us" id="about" hasDropdown={false} to="/about" />
-        <NavItem title="Company" id="company" hasDropdown={true}>
-          <div className="bg-white p-6 rounded-xl shadow-xl border border-gray-200 text-left">Company Content Placeholder</div>
-        </NavItem>
+        <NavItem title="Platform" id="platform" hasDropdown={false} to="/platform" />
       </div>
 
       <div className="flex items-center gap-6 font-medium flex-shrink-0">
@@ -206,7 +225,7 @@ const Navbar = () => {
           </button>
         </Link>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

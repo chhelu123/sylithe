@@ -7,7 +7,7 @@ const pageImage = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?aut
 
 const TransparentReporting = () => { // <--- FIXED NAME
   return (
-    <div className="min-h-screen bg-white pt-20 font-sans">
+    <div className="min-h-screen bg-[#F1F1F1] pt-20 font-sans">
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-[#0F172A]">
         <div className="absolute inset-0 z-0">
           <img src={pageImage} alt="Reporting" className="w-full h-full object-cover opacity-40" />

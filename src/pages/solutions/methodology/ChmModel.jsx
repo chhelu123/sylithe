@@ -8,7 +8,7 @@ import measurementGapImage1 from '../../../assets/tree22.png';
 import measurementGapImage2 from '../../../assets/chm14.png';
 import measurementGapImage3 from '../../../assets/chm19.png';
 import solutionImage from '../../../assets/chm16.png';
-import processImage from '../../../assets/chm18.png';
+import processImage from '../../../assets/chm26.png';
 import developersImage from '../../../assets/chm20.png';
 import buyersImage from '../../../assets/chm21.png';
 import accuracyImage from '../../../assets/Tree50.png';
@@ -20,7 +20,7 @@ const cdStyle = {
   color: '#08292F',
   headingFont: '"Inter", "Helvetica Neue", Arial, sans-serif',
   bodyFont: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
-  accentColor: '#84cc16',
+  accentColor: '#16a34a',
   lightAccent: '#f7fce5',
 };
 
@@ -175,12 +175,12 @@ const StandardsMarquee = () => {
 const ChmModel = () => {
   return (
     <div
-      className="w-full bg-white pt-20 overflow-hidden"
+      className="w-full bg-[#F1F1F1] pt-20 overflow-hidden"
       style={{ fontFamily: cdStyle.bodyFont, color: cdStyle.color }}
     >
 
       {/* ================= 1. HERO SECTION ================= */}
-      <section className="pt-12 pb-24 px-6 md:px-12 lg:px-24 bg-white border-b border-gray-100">
+      <section className="pt-12 pb-24 px-6 md:px-12 lg:px-24 bg-[#F1F1F1] border-b border-gray-100">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Text Left */}
@@ -204,9 +204,9 @@ const ChmModel = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                className="px-8 py-4 rounded-full font-medium text-lg transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 hover:bg-[#062125] text-white"
+                className="px-8 py-4 rounded-full font-medium text-lg text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 hover:bg-[#08292f]"
                 style={{
-                  backgroundColor: '#08292f',
+                  backgroundColor: '#062125',
                   fontFamily: cdStyle.bodyFont,
                 }}
               >
@@ -233,7 +233,7 @@ const ChmModel = () => {
       </section>
 
       {/* ================= 2. THE MEASUREMENT GAP (Problem) ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#F1F1F1]">
         <div className="max-w-7xl mx-auto">
 
           <motion.div
@@ -284,7 +284,7 @@ const ChmModel = () => {
               <motion.div
                 key={index}
                 variants={itemFade}
-                className="flex flex-col items-start bg-white border border-gray-200 rounded-lg p-10 h-full hover:shadow-lg transition-shadow duration-300"
+                className="flex flex-col items-start bg-[#F1F1F1] border border-gray-200 rounded-lg p-10 h-full hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="mb-8 h-24 flex items-center justify-start">
                   <img
@@ -314,7 +314,7 @@ const ChmModel = () => {
       </section>
 
       {/* ================= 3. WHAT WE OFFER (Solution) ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#F1F1F1]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           {/* Image Left */}
           <motion.div className="lg:order-first" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={slideInLeft}>
@@ -328,7 +328,7 @@ const ChmModel = () => {
             </CDHeading>
 
             <CDBody large className="mb-6">
-              We combine satellite imagery with spaceborne and airborne LiDAR to deliver annual canopy height maps at 10-meter resolution.
+              We combine satellite imagery with spaceborne and airborne LiDAR to deliver annual canopy height maps.
             </CDBody>
 
             <CDBody className="mb-8">
@@ -341,7 +341,7 @@ const ChmModel = () => {
       </section>
 
       {/* ================= 4. HOW IT WORKS (Process) ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-y" style={{ borderColor: 'rgba(8, 41, 47, 0.06)' }}>
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#F1F1F1] border-y" style={{ borderColor: 'rgba(8, 41, 47, 0.06)' }}>
         <div className="max-w-7xl mx-auto">
 
           <motion.div className="text-center max-w-4xl mx-auto mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
@@ -442,7 +442,7 @@ const ChmModel = () => {
       </section>
 
       {/* ================= 7. GLOBAL COVERAGE (Capability) ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#F1F1F1]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Text Left */}
@@ -538,7 +538,7 @@ const ChmModel = () => {
       </section>
 
       {/* ================= 9. MISSION (Commitment) ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#F1F1F1]">
         <div className="max-w-5xl mx-auto">
           <motion.div
             className="rounded-3xl p-12 md:p-16 relative overflow-hidden"
@@ -584,13 +584,13 @@ const ChmModel = () => {
                 <img src={testimonialImage} alt="Planetary Scale" className="rounded-2xl shadow-lg w-full object-cover h-64 border border-white/20" />
               </div>
             </div>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#84cc16]/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#16a34a]/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
           </motion.div>
         </div>
       </section>
 
       {/* ================= 10. CLOSING CTA ================= */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#F1F1F1]">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <CDHeading as="h1" size="hero" className="mb-8">
@@ -604,8 +604,8 @@ const ChmModel = () => {
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button onClick={() => window.location.href = '/chm-verification'}
-                className="px-10 py-4 rounded-full font-medium text-lg transition-all shadow-xl active:scale-95 hover:bg-[#062125] text-white"
-                style={{ backgroundColor: '#08292f', fontFamily: cdStyle.bodyFont }}
+                className="px-10 py-4 rounded-full font-medium text-lg text-white transition-all shadow-xl active:scale-95 hover:bg-[#08292f]"
+                style={{ backgroundColor: '#062125', fontFamily: cdStyle.bodyFont }}
               >
                 Launch Dashboard
               </button>

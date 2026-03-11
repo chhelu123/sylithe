@@ -30,10 +30,10 @@ const AgbCalculation = () => {
   }, []);
 
   return (
-    <div className="w-full bg-white font-sans text-[#0F172A] pt-20">
+    <div className="w-full bg-[#F1F1F1] font-sans text-[#0F172A] pt-20">
       
       {/* HERO */}
-      <section className="w-full bg-white border-b border-gray-100 py-20 px-6 md:px-12 lg:px-24">
+      <section className="w-full bg-[#F1F1F1] border-b border-gray-100 py-20 px-6 md:px-12 lg:px-24">
         <div className="max-w-4xl">
           <div className="inline-block px-3 py-1 bg-[#A3E635]/10 text-[#4d7c0f] rounded-md text-xs font-bold tracking-widest uppercase mb-6 border border-[#A3E635]/20">
             AGB Calculation

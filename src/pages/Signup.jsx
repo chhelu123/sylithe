@@ -10,7 +10,7 @@ import logo from '../assets/treee13.png'; // Your Logo
 
 const Signup = () => {
     return (
-        <div className="min-h-screen w-full flex bg-white font-sans">
+        <div className="min-h-screen w-full flex bg-[#F1F1F1] font-sans">
 
             {/* ================= LEFT SIDE: VISUAL & BRANDING ================= */}
             <div className="hidden lg:flex w-1/2 relative overflow-hidden bg-[#0F172A]">
@@ -43,8 +43,8 @@ const Signup = () => {
 
                         <div className="mt-8 flex gap-2">
                             <div className="h-1 w-12 bg-[#A3E635] rounded-full"></div>
-                            <div className="h-1 w-2 bg-white/20 rounded-full"></div>
-                            <div className="h-1 w-2 bg-white/20 rounded-full"></div>
+                            <div className="h-1 w-2 bg-[#F1F1F1]/20 rounded-full"></div>
+                            <div className="h-1 w-2 bg-[#F1F1F1]/20 rounded-full"></div>
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@ const Signup = () => {
                             <div className="w-full border-t border-gray-200"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white text-gray-500">Or continue with email</span>
+                            <span className="px-2 bg-[#F1F1F1] text-gray-500">Or continue with email</span>
                         </div>
                     </div>
 

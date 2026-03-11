@@ -36,7 +36,7 @@ const Login = () => {
                 </label>
                 <input 
                     type="email" 
-                    className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#1a1a1a] focus:border-[#1a1a1a] transition-all shadow-sm"
+                    className="w-full px-3 py-2.5 bg-[#F1F1F1] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#1a1a1a] focus:border-[#1a1a1a] transition-all shadow-sm"
                 />
             </div>
 
@@ -48,7 +48,7 @@ const Login = () => {
                 <div className="relative">
                     <input 
                         type={showPassword ? "text" : "password"}
-                        className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#1a1a1a] focus:border-[#1a1a1a] transition-all shadow-sm pr-10"
+                        className="w-full px-3 py-2.5 bg-[#F1F1F1] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#1a1a1a] focus:border-[#1a1a1a] transition-all shadow-sm pr-10"
                     />
                     <button 
                         type="button"

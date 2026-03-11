@@ -35,6 +35,9 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 // --- ABOUT US ---
 import AboutUs from './pages/AboutUs';
 
+// --- PLATFORM ---
+import Platform from './pages/Platform';
+
 // --- HOME ---
 const Home = () => <HeroSection />;
 
@@ -49,7 +52,7 @@ function Layout({ children }) {
     location.pathname === '/chm-verification' || location.pathname === '/signup';
 
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-white flex flex-col">
+    <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[#F1F1F1] flex flex-col">
       {!isFullScreenApp && <Navbar />}
 
       <div className="flex-grow">
@@ -62,11 +65,25 @@ function Layout({ children }) {
 }
 
 /* --------------------------------------------------
+   Scroll To Top Utility
+--------------------------------------------------- */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
+/* --------------------------------------------------
    APP
 --------------------------------------------------- */
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Routes>
 
@@ -89,6 +106,9 @@ function App() {
 
           {/* --- ABOUT US --- */}
           <Route path="/about" element={<AboutUs />} />
+
+          {/* --- PLATFORM --- */}
+          <Route path="/platform" element={<Platform />} />
 
           {/* --- FULLSCREEN CHM DASHBOARD --- */}
           <Route path="/chm-verification" element={<ChmDashboard />} />
