@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HiArrowLeft } from "react-icons/hi";
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 // Specific Image for Carbon Mapping
@@ -9,7 +10,7 @@ const pageImage = "https://images.unsplash.com/photo-1501854140884-074bf86ee91c?
 const CarbonMapping = () => {
   return (
     <div className="min-h-screen bg-[#F1F1F1] pt-20 font-sans">
-      
+
       {/* --- UNIQUE HERO FOR CARBON MAPPING --- */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-[#0F172A]">
         <div className="absolute inset-0 z-0">

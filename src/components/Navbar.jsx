@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { Link, useLocation } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 
 // --- 1. IMPORT YOUR PNG LOGO HERE ---
@@ -12,10 +13,83 @@ import sylitheLogo from '../assets/treee13.png';
 import { RiMapPin2Line, RiBarChartGroupedLine, RiGlobalLine, RiFileList3Line } from "react-icons/ri";
 import { TbTrees, TbSatellite, TbMathFunction, TbBrandCarbon } from "react-icons/tb";
 
+// --- Reusable Dropdown Link Item ---
+const DropdownLinkItem = ({ title, description, to, icon: Icon }) => {
+  const content = (
+    <div className="flex gap-4 items-start">
+      {Icon && (
+        <div className="mt-1 p-2 bg-sylitheGreen/10 rounded-lg text-sylitheDark shrink-0">
+          <Icon className="text-xl" />
+        </div>
+      )}
+      <div>
+        <h3 className="font-bold text-[#0F172A] group-hover/item:text-sylitheGreen transition-colors text-base">
+          {title}
+        </h3>
+        <p className="text-sm text-gray-500 mt-1 leading-relaxed text-left">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+
+  const classes = "block group/item p-3 -mx-3 rounded-xl hover:bg-gray-50 transition-colors text-left";
+
+  if (to) return <Link to={to} className={classes}>{content}</Link>;
+  return <a href="#" className={classes}>{content}</a>;
+};
+
+// --- Main Nav Item Logic ---
+const NavItem = ({ title, id, hasDropdown, children, to, hoveredNav, setHoveredNav }) => {
+  const isHovered = hoveredNav === id;
+
+  const navContent = (
+    <div className={`cursor-pointer flex items-center gap-1 font-medium transition-colors px-4 py-3
+        ${isHovered ? 'text-[#0F172A]' : 'text-gray-600'}`}>
+      {title}
+      {hasDropdown && (
+        <IoIosArrowDown className={`text-sm transition-transform duration-300 ${isHovered ? '-rotate-180 text-[#0F172A]' : 'text-gray-400'}`} />
+      )}
+    </div>
+  );
+
+  return (
+    <div
+      className="relative h-full flex items-center"
+      onMouseEnter={() => setHoveredNav(id)}
+      onMouseLeave={() => setHoveredNav(null)}
+    >
+      {to ? (
+        <Link to={to} className="h-full flex items-center">
+          {navContent}
+        </Link>
+      ) : (
+        navContent
+      )}
+      <AnimatePresence>
+        {hasDropdown && isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 5 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-full left-0 pt-4 z-50 w-max"
+            style={{ left: id === 'solutions' ? '-200px' : '-100px' }}
+          >
+            <div className="absolute -top-4 left-0 w-full h-8 bg-transparent"></div>
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const Navbar = () => {
   const [hoveredNav, setHoveredNav] = useState(null);
   const [hidden, setHidden] = useState(false);
   const { scrollY } = useScroll();
+  // eslint-disable-next-line no-unused-vars
   const location = useLocation();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -28,34 +102,9 @@ const Navbar = () => {
     }
   });
 
-  // --- Reusable Dropdown Link Item ---
-  const DropdownLinkItem = ({ title, description, to, icon: Icon }) => {
-    const content = (
-      <div className="flex gap-4 items-start">
-        {Icon && (
-          <div className="mt-1 p-2 bg-sylitheGreen/10 rounded-lg text-sylitheDark shrink-0">
-            <Icon className="text-xl" />
-          </div>
-        )}
-        <div>
-          <h3 className="font-bold text-[#0F172A] group-hover/item:text-sylitheGreen transition-colors text-base">
-            {title}
-          </h3>
-          <p className="text-sm text-gray-500 mt-1 leading-relaxed text-left">
-            {description}
-          </p>
-        </div>
-      </div>
-    );
-
-    const classes = "block group/item p-3 -mx-3 rounded-xl hover:bg-gray-50 transition-colors text-left";
-
-    if (to) return <Link to={to} className={classes}>{content}</Link>;
-    return <a href="#" className={classes}>{content}</a>;
-  };
-
 
   // --- PLATFORM MENU CONTENT ---
+  // eslint-disable-next-line no-unused-vars
   const platformDropdownContent = (
     <div className="w-[900px] bg-[#F1F1F1] rounded-2xl shadow-xl border border-gray-200 overflow-hidden grid grid-cols-5">
       <div className="col-span-3 p-8 flex flex-col justify-between">
@@ -132,52 +181,7 @@ const Navbar = () => {
   );
 
 
-  // --- Main Nav Item Logic ---
-  const NavItem = ({ title, id, hasDropdown, children, to }) => {
-    const isHovered = hoveredNav === id;
 
-    // The clickable core of the item
-    const NavContent = () => (
-      <div className={`cursor-pointer flex items-center gap-1 font-medium transition-colors px-4 py-3
-          ${isHovered ? 'text-[#0F172A]' : 'text-gray-600'}`}>
-        {title}
-        {hasDropdown && (
-          <IoIosArrowDown className={`text-sm transition-transform duration-300 ${isHovered ? '-rotate-180 text-[#0F172A]' : 'text-gray-400'}`} />
-        )}
-      </div>
-    );
-
-    return (
-      <div
-        className="relative h-full flex items-center"
-        onMouseEnter={() => setHoveredNav(id)}
-        onMouseLeave={() => setHoveredNav(null)}
-      >
-        {to ? (
-          <Link to={to} className="h-full flex items-center">
-            <NavContent />
-          </Link>
-        ) : (
-          <NavContent />
-        )}
-        <AnimatePresence>
-          {hasDropdown && isHovered && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 5 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute top-full left-0 pt-4 z-50 w-max"
-              style={{ left: id === 'solutions' ? '-200px' : '-100px' }}
-            >
-              <div className="absolute -top-4 left-0 w-full h-8 bg-transparent"></div>
-              {children}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    );
-  };
 
   return (
     <motion.nav
@@ -204,12 +208,12 @@ const Navbar = () => {
       </Link>
 
       <div className="hidden lg:flex items-center relative h-full">
-        <NavItem title="Home" id="home" hasDropdown={false} to="/" />
-        <NavItem title="Solutions" id="solutions" hasDropdown={true}>
+        <NavItem title="Home" id="home" hasDropdown={false} to="/" hoveredNav={hoveredNav} setHoveredNav={setHoveredNav} />
+        <NavItem title="Solutions" id="solutions" hasDropdown={true} hoveredNav={hoveredNav} setHoveredNav={setHoveredNav}>
           {solutionsDropdownContent}
         </NavItem>
-        <NavItem title="About Us" id="about" hasDropdown={false} to="/about" />
-        <NavItem title="Platform" id="platform" hasDropdown={false} to="/platform" />
+        <NavItem title="About Us" id="about" hasDropdown={false} to="/about" hoveredNav={hoveredNav} setHoveredNav={setHoveredNav} />
+        <NavItem title="Platform" id="platform" hasDropdown={false} to="/platform" hoveredNav={hoveredNav} setHoveredNav={setHoveredNav} />
       </div>
 
       <div className="flex items-center gap-6 font-medium flex-shrink-0">

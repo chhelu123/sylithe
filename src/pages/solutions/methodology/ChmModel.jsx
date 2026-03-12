@@ -1,5 +1,6 @@
 import React from 'react';
 import { HiCheck, HiArrowRight, HiGlobe, HiShieldCheck, HiChartBar } from "react-icons/hi";
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 // --- IMAGE IMPORTS ---
@@ -9,9 +10,6 @@ import measurementGapImage2 from '../../../assets/chm14.png';
 import measurementGapImage3 from '../../../assets/chm19.png';
 import solutionImage from '../../../assets/chm16.png';
 import processImage from '../../../assets/chm26.png';
-import developersImage from '../../../assets/chm20.png';
-import buyersImage from '../../../assets/chm21.png';
-import accuracyImage from '../../../assets/Tree50.png';
 import coverageImage from '../../../assets/chm22.png';
 import testimonialImage from '../../../assets/tree8.jpg';
 

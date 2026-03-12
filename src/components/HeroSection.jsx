@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 // --- ICON IMPORT ---
 import { HiCheck } from "react-icons/hi";
@@ -6,7 +7,7 @@ import { HiCheck } from "react-icons/hi";
 // --- IMAGES ---
 import treeRight from '../assets/Tree50.png';
 import satelliteImg from '../assets/chm22.png';
-import graphImg from '../assets/chm22.png';
+import graphImg from '../assets/DCAB30.png';
 import indiaImg from '../assets/home1.png';
 
 

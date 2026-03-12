@@ -1,23 +1,6 @@
-import {
-  useEffect,
-  useRef,
-  useState
-} from
-
-
-
-  'react';
-import { motion } from 'framer-motion';
-
-
-
-
-
-
-
-
-
-
+import { useEffect, useRef, useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 
 
@@ -41,6 +24,7 @@ const ScrollExpandMedia = ({
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setScrollProgress(0);
     setShowContent(false);
     setMediaFullyExpanded(false);

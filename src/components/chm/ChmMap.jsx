@@ -74,7 +74,10 @@ const ChmMap = ({ onPolygonComplete, result, activeLayers = new Set() }) => {
         const json = JSON.parse(ev.target.result);
         setImportedGeoJson(json);
         onPolygonComplete(json);
-      } catch (err) { alert("Invalid GeoJSON file."); }
+        // eslint-disable-next-line no-unused-vars
+      } catch (err) {
+        alert("Invalid GeoJSON file.");
+      }
     };
     reader.readAsText(file);
   };

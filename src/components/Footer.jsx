@@ -16,7 +16,7 @@ import { Facebook, Instagram, Linkedin, Moon, Send, Sun, Twitter } from "lucide-
 import { Link } from "react-router-dom"
 
 const Footer = () => {
-  const [isDarkMode, setIsDarkMode] = React.useState(true)
+  const [isDarkMode] = React.useState(true)
 
   React.useEffect(() => {
     if (isDarkMode) {

@@ -1,12 +1,13 @@
 import React from 'react';
 import { HiCheck, HiArrowRight, HiOutlineLightningBolt, HiOutlineDatabase, HiOutlineGlobeAlt, HiOutlineShieldCheck } from "react-icons/hi";
-import { motion } from 'framer-motion';
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
 
 // --- IMAGE IMPORTS ---
 import heroDashboard from '../assets/dashboard.jpg';
 import systemArch from '../assets/lulc10.png';
 import dataFusion from '../assets/chm22.png';
-import reportingImg from '../assets/lulc8.png';
+
 
 // --- ANIMATION VARIANTS ---
 const fadeInUp = {

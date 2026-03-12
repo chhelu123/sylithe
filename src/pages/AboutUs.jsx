@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import ScrollExpandMedia from '../components/ui/scroll-expansion-hero';
 import { WorldMap } from '../components/ui/map';
@@ -9,10 +10,6 @@ const fadeUp = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
 };
 
-const staggerChildren = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.15 } },
-};
 
 const AboutUs = () => {
     return (

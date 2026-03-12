@@ -1,5 +1,6 @@
 import React from 'react';
 import { HiCheck, HiX, HiUpload, HiArrowRight } from "react-icons/hi";
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 // --- IMAGE IMPORTS ---

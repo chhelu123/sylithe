@@ -1,5 +1,6 @@
 import React from 'react';
 import { HiArrowRight } from "react-icons/hi";
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 // --- IMAGE IMPORTS ---
@@ -8,9 +9,6 @@ import problemImage from '../../../assets/tree22.png';
 import solutionImage from '../../../assets/tree22.png';
 import counterfactualImage from '../../../assets/DCAB26.png';
 import processImage from '../../../assets/DCAB25.png';
-import developersImage from '../../../assets/lulc1.png';
-import buyersImage from '../../../assets/lulc4.png';
-import auditorsImage from '../../../assets/Tree50.png';
 import methodologyImage from '../../../assets/tree9.jpg';
 import forestImage from '../../../assets/home1.png';
 

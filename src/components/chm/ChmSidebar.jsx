@@ -73,7 +73,8 @@ export default function ChmSidebar({
   const [open, setOpen] = useState({ eligible: true, ineligible: true, eligibleClass: true, ineligibleClass: true, burn: true, defor: true });
 
   const [burnYear, setBurnYear] = useState(2022);
-  const [deforYear, setDeforYear] = useState(2022);
+  // eslint-disable-next-line no-unused-vars
+  const [deforYear, setDeforYear] = useState(2023);
 
   const formatHa = (val) => val ? val.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0;
 
