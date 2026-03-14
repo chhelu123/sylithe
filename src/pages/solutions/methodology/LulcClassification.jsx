@@ -1,5 +1,6 @@
 import React from 'react';
 import { HiCheck, HiX, HiUpload, HiArrowRight } from "react-icons/hi";
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
@@ -85,10 +86,10 @@ const LulcClassification = () => {
               Sylithe provides spatially explicit, time-series-based LULC intelligence aligned with ICM, Verra, ARR, and REDD+ frameworks—so only eligible land enters the carbon pipeline.
             </p>
             <div className="mt-10">
-              <button className="w-full sm:w-auto bg-[#062125] text-white px-8 py-4 rounded-full font-medium text-base hover:bg-[#08292f] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
+              <Link to="/signup" className="w-full sm:w-auto bg-[#062125] text-white px-8 py-4 rounded-full font-medium text-base hover:bg-[#08292f] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 inline-flex">
                 <HiUpload className="text-xl" />
                 <span>Upload Polygon & Check</span>
-              </button>
+              </Link>
             </div>
           </motion.div>
 

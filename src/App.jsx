@@ -38,6 +38,12 @@ import AboutUs from './pages/AboutUs';
 // --- PLATFORM ---
 import Platform from './pages/Platform';
 
+// --- WHAT WE OFFER ---
+import WhatWeOffer from './pages/WhatWeOffer';
+
+// --- FOR BUYERS ---
+import ForBuyers from './pages/ForBuyers';
+
 // --- HOME ---
 const Home = () => <HeroSection />;
 
@@ -109,6 +115,12 @@ function App() {
 
           {/* --- PLATFORM --- */}
           <Route path="/platform" element={<Platform />} />
+
+          {/* --- WHAT WE OFFER --- */}
+          <Route path="/what-we-offer" element={<WhatWeOffer />} />
+
+          {/* --- FOR BUYERS --- */}
+          <Route path="/for-buyers" element={<ForBuyers />} />
 
           {/* --- FULLSCREEN CHM DASHBOARD --- */}
           <Route path="/chm-verification" element={<ChmDashboard />} />

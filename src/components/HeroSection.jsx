@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 // --- ICON IMPORT ---
 import { HiCheck } from "react-icons/hi";
 
@@ -101,9 +102,9 @@ const HeroSection = () => {
               </motion.p>
 
               <motion.div variants={textVariant}>
-                <button className="bg-[#08292f] text-white px-8 py-4 rounded-full font-[Telegraf_Bold,var(--font-sans)] font-bold text-base hover:bg-[#062125] transition-all shadow-lg active:scale-95">
+                <Link to="/signup" className="bg-[#08292f] text-white px-8 py-4 rounded-full font-[Telegraf_Bold,var(--font-sans)] font-bold text-base hover:bg-[#062125] transition-all shadow-lg active:scale-95 inline-block">
                   Get started
-                </button>
+                </Link>
               </motion.div>
             </motion.div>
           </div>
@@ -221,12 +222,14 @@ const HeroSection = () => {
                 ))}
               </motion.ul>
 
-              <motion.button
-                variants={textVariant}
-                className="rounded-full border-2 border-[#0F172A] px-8 py-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-bold text-sm hover:bg-[#0F172A] hover:text-white transition-all duration-300"
-              >
-                Learn more
-              </motion.button>
+              <motion.div variants={textVariant}>
+                <Link
+                  to="/for-buyers"
+                  className="rounded-full border-2 border-[#0F172A] px-8 py-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-bold text-sm hover:bg-[#0F172A] hover:text-white transition-all duration-300 inline-block"
+                >
+                  Learn more
+                </Link>
+              </motion.div>
             </div>
 
             <motion.div variants={imageVariant} className="flex justify-center">
@@ -270,12 +273,14 @@ const HeroSection = () => {
                 ))}
               </motion.ul>
 
-              <motion.button
-                variants={textVariant}
-                className="rounded-full border-2 border-[#0F172A] px-8 py-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-bold text-sm hover:bg-[#0F172A] hover:text-white transition-all duration-300"
-              >
-                Explore methodology
-              </motion.button>
+              <motion.div variants={textVariant}>
+                <Link
+                  to="/methodology/dcab"
+                  className="rounded-full border-2 border-[#0F172A] px-8 py-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-bold text-sm hover:bg-[#0F172A] hover:text-white transition-all duration-300 inline-block"
+                >
+                  Explore methodology
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -312,12 +317,14 @@ const HeroSection = () => {
                 ))}
               </motion.ul>
 
-              <motion.button
-                variants={textVariant}
-                className="rounded-full border-2 border-[#0F172A] px-8 py-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-bold text-sm hover:bg-[#0F172A] hover:text-white transition-all duration-300"
-              >
-                View solutions
-              </motion.button>
+              <motion.div variants={textVariant}>
+                <Link
+                  to="/what-we-offer"
+                  className="rounded-full border-2 border-[#0F172A] px-8 py-3 text-[#0F172A] font-[Telegraf_Bold,var(--font-sans)] font-bold text-sm hover:bg-[#0F172A] hover:text-white transition-all duration-300 inline-block"
+                >
+                  View solutions
+                </Link>
+              </motion.div>
             </div>
 
             <motion.div variants={imageVariant} className="flex justify-center">

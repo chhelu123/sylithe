@@ -9,7 +9,7 @@ from services.gee_init import init_gee
 warnings.filterwarnings('ignore', category=UserWarning)
 init_gee()
 
-MODEL_PATH = "/Users/karan/Desktop/sylithe-website/backend/models/Sylithe_BayesOpt_Model.pkl"
+MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "models", "Sylithe_BayesOpt_Model.pkl")
 
 def load_model():
     if not os.path.exists(MODEL_PATH): 

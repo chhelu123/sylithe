@@ -212,6 +212,7 @@ const Navbar = () => {
         <NavItem title="Solutions" id="solutions" hasDropdown={true} hoveredNav={hoveredNav} setHoveredNav={setHoveredNav}>
           {solutionsDropdownContent}
         </NavItem>
+        <NavItem title="What We Offer" id="offer" hasDropdown={false} to="/what-we-offer" hoveredNav={hoveredNav} setHoveredNav={setHoveredNav} />
         <NavItem title="About Us" id="about" hasDropdown={false} to="/about" hoveredNav={hoveredNav} setHoveredNav={setHoveredNav} />
         <NavItem title="Platform" id="platform" hasDropdown={false} to="/platform" hoveredNav={hoveredNav} setHoveredNav={setHoveredNav} />
       </div>
