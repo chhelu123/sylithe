@@ -1,5 +1,6 @@
 flask
 flask-cors
+pymongo[srv]
 pandas
 numpy
 scikit-learn

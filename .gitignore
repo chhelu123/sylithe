@@ -42,3 +42,9 @@ backend/models/*.onnx
 # =========================
 *.csv
 *.parquet
+
+# =========================
+# Environment secrets
+# =========================
+.env
+backend/.env

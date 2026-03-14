@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { HiArrowRight, HiArrowLeft } from 'react-icons/hi';
+import { Link, useNavigate } from 'react-router-dom';
+import { HiArrowRight, HiArrowLeft, HiCheckCircle, HiMail } from 'react-icons/hi';
 
 import authBg from '../assets/tree23.png';
 import logo from '../assets/treee13.png';
@@ -17,11 +17,33 @@ const Signup = () => {
     companySize: '', interestArea: '', hearAbout: '', message: '',
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
   const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Signup submitted:', form);
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStep(3);
+      } else {
+        setError(data.message || 'Something went wrong');
+      }
+    } catch {
+      setError('Could not connect to server. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,6 +72,7 @@ const Signup = () => {
             <div className="mt-8 flex gap-2">
               <div className={`h-1 w-12 rounded-full transition-all ${step === 1 ? 'bg-[#A3E635]' : 'bg-[#F1F1F1]/20'}`} />
               <div className={`h-1 w-12 rounded-full transition-all ${step === 2 ? 'bg-[#A3E635]' : 'bg-[#F1F1F1]/20'}`} />
+              <div className={`h-1 w-12 rounded-full transition-all ${step === 3 ? 'bg-[#A3E635]' : 'bg-[#F1F1F1]/20'}`} />
             </div>
           </div>
         </div>
@@ -165,17 +188,66 @@ const Signup = () => {
                   <button type="button" onClick={() => setStep(1)} className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg border border-gray-300 font-bold text-gray-700 hover:bg-gray-50 transition-all">
                     <HiArrowLeft /> Back
                   </button>
-                  <button type="submit" className="flex-1 bg-[#08292f] text-white py-3.5 rounded-lg font-bold hover:bg-[#062125] transition-all shadow-lg active:scale-95">
-                    Sign Up
+                  <button type="submit" disabled={loading} className="flex-1 bg-[#08292f] text-white py-3.5 rounded-lg font-bold hover:bg-[#062125] transition-all shadow-lg active:scale-95 disabled:opacity-60">
+                    {loading ? 'Signing up...' : 'Sign Up'}
                   </button>
                 </div>
+                {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
               </form>
             </>
           )}
 
-          <p className="text-center text-sm text-gray-600 mt-8">
-            Already have an account? <Link to="/login" className="font-bold text-[#0F172A] hover:underline">Log in</Link>
-          </p>
+          {step === 3 && (
+            <div className="text-center">
+              <div className="w-20 h-20 rounded-full bg-[#16a34a]/10 flex items-center justify-center mx-auto mb-6">
+                <HiCheckCircle className="text-5xl text-[#16a34a]" />
+              </div>
+              <h2 className="text-3xl font-bold text-[#0F172A] mb-3">You're all set!</h2>
+              <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                Thank you for signing up, <span className="font-semibold text-[#0F172A]">{form.fullName}</span>.
+                We've received your request and our team is reviewing your details.
+              </p>
+
+              <div className="bg-white rounded-xl border border-gray-200 p-6 text-left mb-8">
+                <div className="flex items-start gap-4 mb-4">
+                  <HiMail className="text-2xl text-[#16a34a] mt-0.5 shrink-0" />
+                  <div>
+                    <h3 className="font-bold text-[#0F172A] mb-1">Check your email</h3>
+                    <p className="text-sm text-gray-500">We'll send a confirmation and next steps to <span className="font-semibold text-[#0F172A]">{form.email}</span></p>
+                  </div>
+                </div>
+                <div className="border-t border-gray-100 pt-4 space-y-3">
+                  <p className="text-sm text-gray-600 flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] mt-1.5 shrink-0" />
+                    A member of our team will reach out within 24–48 hours to schedule a personalized walkthrough of the platform.
+                  </p>
+                  <p className="text-sm text-gray-600 flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] mt-1.5 shrink-0" />
+                    In the meantime, feel free to explore our methodology pages to learn how Sylithe works.
+                  </p>
+                  <p className="text-sm text-gray-600 flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] mt-1.5 shrink-0" />
+                    If you have any questions, reach us at <span className="font-semibold text-[#0F172A]">hello@sylithe.com</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <Link to="/" className="w-full bg-[#08292f] text-white py-3.5 rounded-lg font-bold hover:bg-[#062125] transition-all shadow-lg active:scale-95 text-center">
+                  Back to Home
+                </Link>
+                <Link to="/about" className="w-full border border-gray-300 text-gray-700 py-3.5 rounded-lg font-bold hover:bg-gray-50 transition-all text-center">
+                  Learn more about Sylithe
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {step !== 3 && (
+            <p className="text-center text-sm text-gray-600 mt-8">
+              Already have an account? <Link to="/login" className="font-bold text-[#0F172A] hover:underline">Log in</Link>
+            </p>
+          )}
         </div>
       </div>
     </div>
